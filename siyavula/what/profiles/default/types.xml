@@ -8,4 +8,7 @@
   -->
 <object name="portal_types" meta_type="Plone Types Tool">
   <!-- -*- extra stuff goes here -*- -->
+  <object name="siyavula.what.answer" meta_type="Dexterity FTI" />
+  <object name="siyavula.what.questioncontainer" meta_type="Dexterity FTI" />
+  <object name="siyavula.what.question" meta_type="Dexterity FTI" />
 </object>
