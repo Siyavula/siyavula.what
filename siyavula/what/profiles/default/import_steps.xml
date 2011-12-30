@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<import-steps>
+    <import-step id="siyavula.what" version="20111230-01"
+                handler="siyavula.what.setuphandlers.setupVarious"
+                title="Siyavula What Setup">
+        <dependency step="contenttyperegistry"/>
+        Siyavula What? setup steps.
+    </import-step>
+</import-steps>
