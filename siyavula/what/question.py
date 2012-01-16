@@ -26,11 +26,19 @@ class IQuestion(form.Schema, IImageScaleTraversable):
     A question about a piece of content.
     """
 
+    question = schema.Text(
+               title=_(u"Question"),
+               description=_("The question."),
+               required=True,
+        )
+
 
 class Question(dexterity.Container):
     grok.implements(IQuestion)
-    
-class SampleView(grok.View):
-    grok.context(IQuestion)
-    grok.require('zope2.View')
-    # grok.name('view')
+
+    def Title(self):
+        return self.question
+
+    def setTitle(self, value):
+        pass
+
