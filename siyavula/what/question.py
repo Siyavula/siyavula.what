@@ -27,10 +27,17 @@ class IQuestion(form.Schema, IImageScaleTraversable):
     """
 
     question = schema.Text(
-               title=_(u"Question"),
-               description=_("The question."),
-               required=True,
-        )
+        title=_(u"Question"),
+        description=_("The question."),
+        required=True,
+    )
+
+    relatedContent = RelationChoice(
+        title=_(u'label_content_item', default=u'Related Content'),
+        source=ObjPathSourceBinder(
+            object_provides='Products.CMFCore.interfaces._content.IContentish'),
+        required=False,
+    )
 
 
 class Question(dexterity.Container):
@@ -41,4 +48,7 @@ class Question(dexterity.Container):
 
     def setTitle(self, value):
         pass
-
+    
+    @property
+    def answers(self):
+        return self.objectValues()
