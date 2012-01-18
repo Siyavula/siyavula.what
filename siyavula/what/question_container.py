@@ -30,8 +30,3 @@ class IQuestioncontainer(form.Schema, IImageScaleTraversable):
 class Questioncontainer(dexterity.Container):
     grok.implements(IQuestioncontainer)
     
-
-class SampleView(grok.View):
-    grok.context(IQuestioncontainer)
-    grok.require('zope2.View')
-    # grok.name('view')
