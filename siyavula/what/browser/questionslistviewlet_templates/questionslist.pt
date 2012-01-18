@@ -1,10 +1,10 @@
 <div id="questions-list-container">
     <ul id="questions-list">
         <li tal:repeat="question view/questions"> 
-            <span tal:content="question/text">Question text</span>
+            <span tal:content="question/text|nothing">Question text</span>
             <ul id="answers-list">
                 <li tal:repeat="answer question/answers">  
-                    <span tal:content="answer/text">Answer text</span>
+                    <span tal:content="answer/text|nothing">Answer text</span>
                 </li>  
             </ul>
             <div id="answer-form">
