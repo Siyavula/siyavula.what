@@ -2,6 +2,12 @@ from Products.CMFCore.utils import getToolByName
 
 from z3c.relationfield.relation import create_relation
 
+from zope.interface import alsoProvides 
+from zope.component import queryMultiAdapter
+from zope.viewlet.interfaces import IViewletManager
+
+from Products.Five.browser import BrowserView as View
+
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import IntegrationTesting
@@ -10,6 +16,8 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 
 from plone.testing import z2
+
+from siyavula.what.interfaces import ISiyavulaWhatLayer
 
 PROJECTNAME = "siyavula.what"
 
@@ -60,3 +68,23 @@ class SiyavulaWhatTestBase(unittest.TestCase):
         )
         answer = question._getOb(newid)
         return answer
+    
+    def _find_viewlet(self, manager_name, viewlet_name, layer=None):
+        context = self.portal.questions
+        request = self.portal.REQUEST
+        if layer:
+            alsoProvides(request, layer)
+
+        view = View(context, request)
+        manager = queryMultiAdapter(
+            (context, request, view),
+            IViewletManager,
+            manager_name,
+            default=None
+        )
+        self.failUnless(manager)
+
+        manager.update()
+        viewlets = manager.viewlets
+        viewlet = [v for v in viewlets if v.__name__ == viewlet_name]
+        return viewlet
