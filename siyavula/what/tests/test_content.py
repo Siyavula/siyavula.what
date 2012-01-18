@@ -107,6 +107,24 @@ class TestQuestion(SiyavulaWhatTestBase):
 
     def test_related_content(self):
         container = self.portal.questions
+        question = self._createQuestion()
+        self.assertEqual(
+            container,
+            question.relatedContent.to_object,
+            'Related coontent set incorrectly.'
+        )
+    
+    def test_add_answer(self):
+        question = self._createQuestion()
+        new_id = question.generateId('answer')
+
+        question.invokeFactory('siyavula.what.answer',
+                                id=new_id,
+                                text='answer_text')
+        self.assertTrue(new_id in question, 'Answer was not created')
+
+    def _createQuestion(self):
+        container = self.portal.questions
         new_id = container.generateId('question')
         rel = create_relation(container.getPhysicalPath())
 
@@ -115,11 +133,7 @@ class TestQuestion(SiyavulaWhatTestBase):
                                 relatedContent=rel,
                                 text='test question 01')
         question = container._getOb(new_id)
-        self.assertEqual(
-            container,
-            question.relatedContent.to_object,
-            'Related coontent set incorrectly.'
-        )
+        return question
 
 
 class TestAnswer(SiyavulaWhatTestBase):
