@@ -1,5 +1,8 @@
-from plone.app.layout.viewlets.common import ViewletBase
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.uuid.interfaces import IUUID
+from plone.app.layout.viewlets.common import ViewletBase
 
 from emas.theme import MessageFactory as _
 
@@ -10,10 +13,14 @@ class QuestionsListViewlet(ViewletBase):
 
     def update(self):
         super(QuestionsListViewlet, self).update()
-        # get all questions relating to this context
-        import pdb;pdb.set_trace()
-        context = self.context
     
     def questions(self):
-        import pdb;pdb.set_trace()
-        return []
+        context = self.context
+        uuid = IUUID(context)
+        pc = getToolByName(context, 'portal_catalog')
+        query = {'portal_type': 'siyavula.what.question',
+                 'relatedContentUID': uuid,
+                 'sort_on': 'created',
+                }
+        brains = pc(query)
+        return brains and [b.getObject() for b in brains] or []

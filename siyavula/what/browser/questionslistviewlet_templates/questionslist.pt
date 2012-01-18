@@ -1,7 +1,12 @@
-<div id="questions-list">
-    <ul tal:repeat="question view/questions"> 
-        <li>
+<div id="questions-list-container">
+    <ul id="questions-list">
+        <li tal:repeat="question view/questions"> 
             <span tal:content="question/question">Question text</span>
+            <ul id="answers-list">
+                <li tal:repeat="answer question/answers">  
+                    <span tal:content="answer">Answer text</span>
+                </li>  
+            </ul>
         </li>
     </ul> 
 </div>
