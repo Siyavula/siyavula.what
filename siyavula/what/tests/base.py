@@ -42,7 +42,10 @@ class TestInstallation(SiyavulaWhatTestBase):
         pass        
 
     def test_setuphandlers(self):
-        assert 'questions' in self.portal.objectIds()
+        self.assertTrue(
+            'questions' in self.portal.objectIds(),
+            'Questions folder was not created.'
+        )
         questions = self.portal._getOb('questions')
         wft = getToolByName(self.portal, 'portal_workflow')
         self.assertEqual(
