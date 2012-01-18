@@ -36,7 +36,35 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
         viewlet_name = 'question-add'
         viewlet = self._find_viewlet(manager_name, viewlet_name)
         self.assertTrue(not viewlet, 'Question-add viewlet found in wrong layer.')
+    
+    def test_create_question_without_text(self):
+        manager_name = 'plone.belowcontent'
+        viewlet_name = 'question-add'
+        layer = ISiyavulaWhatLayer
+        viewlet = self._find_viewlet(manager_name, viewlet_name, layer)
 
+        request = self.portal.REQUEST
+        request.form['siyavula.what.questionadd.form.submitted'] = 'submitted'
+        viewlet[0].update()
+        self.assertTrue(
+            len(self.portal.questions) == 0,
+            'Cannot create question without text.'
+        )
+
+    def test_create_question_with_text(self):
+        manager_name = 'plone.belowcontent'
+        viewlet_name = 'question-add'
+        layer = ISiyavulaWhatLayer
+        viewlet = self._find_viewlet(manager_name, viewlet_name, layer)
+
+        request = self.portal.REQUEST
+        request.form['siyavula.what.questionadd.form.submitted'] = 'submitted'
+        request.form['question'] = 'first question'
+        viewlet[0].update()
+        self.assertTrue(
+            len(self.portal.questions) == 1,
+            'Create question failed.'
+        )
 
 class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     """ Test questions list viewlet """
