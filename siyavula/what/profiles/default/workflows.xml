@@ -8,4 +8,9 @@
    <bound-workflow workflow_id="question_workflow"/>
   </type>
  </bindings>
+ <bindings>
+  <type type_id="siyavula.what.questioncontainer">
+   <bound-workflow workflow_id="simple_publication_workflow"/>
+  </type>
+ </bindings>
 </object>
