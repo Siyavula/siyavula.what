@@ -17,19 +17,12 @@ def setupWhat(portal):
 
     for section_dict in sections:
         if not portal.hasObject(section_dict['id']):
-            portal.invokeFactory(type_name=section_dict['type'],
+            portal.invokeFactory(
+                type_name=section_dict['type'],
                 id=section_dict['id'],
                 title=section_dict['title'],
                 exclude_from_nav=section_dict.get('exclude_from_nav', False),
             ) 
-            section = portal._getOb(section_dict['id'])
-            transaction.commit()
-
-            wf = getToolByName(portal, 'portal_workflow')
-            wf.doActionFor(section,'publish')
-            section.reindexObject()
-        else:
-            section = portal._getOb(section_dict['id'])
         
 
 def setupVarious(context):
