@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<layers>
+    <layer
+        name="siyavula.what"
+        interface="siyavula.what.interfaces.ISiyavulaWhatLayer" />
+</layers>
