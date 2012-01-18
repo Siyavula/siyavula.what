@@ -10,6 +10,9 @@ class QuestionAddViewlet(ViewletBase):
 
     def update(self):
         super(QuestionAddViewlet, self).update()
+
+        if not self.request.form.get('form.submitted'): return
+
         if self.request.get('method', '').lower() == 'post':
             view = self.context.restrictedTraverse('@@add-question')
             question = view()
