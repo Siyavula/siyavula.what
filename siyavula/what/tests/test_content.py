@@ -11,7 +11,6 @@ from plone.uuid.interfaces import IUUID
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 
-from z3c.relationfield.relation import create_relation
 from plone.dexterity.interfaces import IDexterityFTI
 
 from base import SiyavulaWhatTestBase
@@ -143,17 +142,26 @@ class TestQuestion(SiyavulaWhatTestBase):
             'Related content indexed incorrectly.'
         )
 
-    def _createQuestion(self):
-        container = self.portal.questions
-        new_id = container.generateId('question')
-        rel = create_relation(container.getPhysicalPath())
+    def test_question_title(self):
+        question = self._createQuestion()
+        self.assertEqual(
+            question.Title(),
+            'test question 01',
+            'Question title incorrect.'
+        )
 
-        container.invokeFactory('siyavula.what.question',
-                                id=new_id,
-                                relatedContent=rel,
-                                text='test question 01')
-        question = container._getOb(new_id)
-        return question
+    def test_answers(self):
+        question = self._createQuestion()
+        answers = []
+        for i in range(0,5):
+            answers.append(self._createAnswer(question))
+        self.assertTrue(
+            len(question.answers) == 5,
+            'Incorrect amount of answers'
+        )
+        for answer in answers:
+            self.assertTrue(
+                answer in question.answers, 'Answer not in question.')
 
 
 class TestAnswer(SiyavulaWhatTestBase):
@@ -189,22 +197,10 @@ class TestAnswer(SiyavulaWhatTestBase):
         answer = self._createAnswer(question)
         self.assertEqual(
             answer.text, 'test answer 01', 'Answer text incorrect')
-    
-    def _createQuestion(self):
-        context = self.portal.questions
-        newid = context.invokeFactory(
-            'siyavula.what.question',
-            id='testquestion01',
-            text='test question 01',
-        )
-        question = context._getOb(newid)
-        return question
 
-    def _createAnswer(self, question):
-        newid = question.invokeFactory(
-            'siyavula.what.answer',
-            id='testanswer01',
-            text='test answer 01',
-        )
-        answer = question._getOb(newid)
-        return answer
+    def test_answer_title(self):
+        question = self._createQuestion()
+        answer = self._createAnswer(question)
+        self.assertEqual(
+            answer.Title(), 'test answer 01', 'Answer title incorrect')
+    

@@ -1,5 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 
+from z3c.relationfield.relation import create_relation
+
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import IntegrationTesting
@@ -37,16 +39,24 @@ class SiyavulaWhatTestBase(unittest.TestCase):
         self.portal = self.layer['portal']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-class TestInstallation(SiyavulaWhatTestBase):
-    def test_layer(self):
-        pass        
+    def _createQuestion(self):
+        container = self.portal.questions
+        new_id = container.generateId('question')
+        rel = create_relation(container.getPhysicalPath())
 
-    def test_setuphandlers(self):
-        self.assertTrue(
-            'questions' in self.portal.objectIds(),
-            'Questions folder was not created.'
+        container.invokeFactory('siyavula.what.question',
+                                id=new_id,
+                                relatedContent=rel,
+                                text='test question 01')
+        question = container._getOb(new_id)
+        return question
+
+    def _createAnswer(self, question):
+        new_id = question.generateId('answer')
+        newid = question.invokeFactory(
+            'siyavula.what.answer',
+            id=new_id,
+            text='test answer 01',
         )
-        questions = self.portal._getOb('questions')
-        wft = getToolByName(self.portal, 'portal_workflow')
-        self.assertEqual(
-            wft.getInfoFor(questions, 'review_state'), 'private')
+        answer = question._getOb(newid)
+        return answer
