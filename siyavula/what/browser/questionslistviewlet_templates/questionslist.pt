@@ -1,12 +1,23 @@
 <div id="questions-list-container">
     <ul id="questions-list">
         <li tal:repeat="question view/questions"> 
-            <span tal:content="question/question">Question text</span>
+            <span tal:content="question/text">Question text</span>
             <ul id="answers-list">
                 <li tal:repeat="answer question/answers">  
-                    <span tal:content="answer">Answer text</span>
+                    <span tal:content="answer/text">Answer text</span>
                 </li>  
             </ul>
+            <div id="answer-form">
+                <form id="form.answer" name="form.answer" action="." method="POST">
+                    <input type="hidden" id="siyavula.what.questionslist.form.submitted" name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                    <input id="answer" name="answer" value="">
+                    <input type="hidden" id="questionid" name="questionid" value=""
+                        tal:attributes="value question/id">
+                    <button type="submit" id="button.add.answer">Submit answer</button>
+                </form>
+            </div>
         </li>
     </ul> 
 </div>
+
+

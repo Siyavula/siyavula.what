@@ -14,10 +14,8 @@ class QuestionsListViewlet(ViewletBase):
     def update(self):
         super(QuestionsListViewlet, self).update()
 
-        # if the form was not posted to this method we return
-        if not self.request.form.get('form.submitted'): return
-
-        if self.request.get('method', '').lower() == 'post':
+        # if the form was not posted to this method we do nothing
+        if self.request.form.get('siyavula.what.questionslist.form.submitted'):
             view = self.context.restrictedTraverse('@@add-answer')
             answer = view()
             self.request.response.redirect(self.context.absolute_url())
