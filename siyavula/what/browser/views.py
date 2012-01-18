@@ -1,8 +1,6 @@
 import json
 from zExceptions import NotFound
-from zope.component import getUtility
-from zope.app.intid.interfaces import IIntIds
-from z3c.relationfield import RelationValue
+from z3c.relationfield.relation import create_relation
 
 from Products.Five import BrowserView
 from siyavula.what import MessageFactory as _
@@ -23,12 +21,11 @@ class AddQuestionView(BrowserView):
         portal = context.restrictedTraverse('@@plone_portal_state').portal()
         questions = portal._getOb('questions')
         new_id = questions.generateId('question')
-        intids = getUtility(IIntIds)
-        related_id = intids.getId(context)
+        relation = create_relation(context.getPhysicalPath())
 
         questions.invokeFactory('siyavula.what.question',
                                 id=new_id,
-                                relatedContent=RelationValue(related_id),
+                                relatedContent=relation,
                                 text=question_text)
         
         question = questions._getOb(new_id)
