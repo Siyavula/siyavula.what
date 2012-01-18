@@ -1,0 +1,7 @@
+<div id="questions-list">
+    <ul tal:repeat="question view/questions"> 
+        <li>
+            <span tal:content="question/question">Question text</span>
+        </li>
+    </ul> 
+</div>

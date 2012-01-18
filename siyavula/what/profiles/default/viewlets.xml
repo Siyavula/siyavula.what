@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object>
+  <order manager="plone.belowcontent" skinname="*">
+    <viewlet name="question-add" insert-before="*"/>
+    <viewlet name="questions-list" insert-after="question-add"/>
+  </order>
+</object>
