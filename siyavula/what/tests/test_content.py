@@ -1,6 +1,9 @@
 import os
 
 from Products.CMFCore.utils import getToolByName
+
+from zope.component import getUtility
+from zope.app.intid.interfaces import IIntIds
 from zope.component import createObject
 from zope.component import queryUtility
 
@@ -60,6 +63,15 @@ class TestQuestionContainer(SiyavulaWhatTestBase):
             'Question container workflow is incorrect'
         )
 
+    def test_allowed_types(self):
+        container = self.portal.questions
+        new_id = container.generateId('question')
+        container.invokeFactory('siyavula.what.question',
+                                id=new_id,
+                                text='test question 01')
+        self.assertTrue(new_id in container, 'Question create failed')
+
+
 class TestQuestion(SiyavulaWhatTestBase):
     """ Basic methods to test questions """
     
@@ -91,6 +103,22 @@ class TestQuestion(SiyavulaWhatTestBase):
             wft.getChainFor(question),
             ('question_workflow',),
             'Question workflow is incorrect'
+        )
+
+    def test_related_content(self):
+        container = self.portal.questions
+        new_id = container.generateId('question')
+        rel = create_relation(container.getPhysicalPath())
+
+        container.invokeFactory('siyavula.what.question',
+                                id=new_id,
+                                relatedContent=rel,
+                                text='test question 01')
+        question = container._getOb(new_id)
+        self.assertEqual(
+            container,
+            question.relatedContent.to_object,
+            'Related coontent set incorrectly.'
         )
 
 
