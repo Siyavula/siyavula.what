@@ -128,6 +128,21 @@ class TestQuestion(SiyavulaWhatTestBase):
                                 text='answer_text')
         self.assertTrue(new_id in question, 'Answer was not created')
 
+    def test_indexing(self):
+        context = self.portal.questions
+        intids = getUtility(IIntIds)
+        context_uuid = intids.getId(context)
+
+        question = self._createQuestion()
+
+        pc = getToolByName(self.portal, 'portal_catalog')
+        brains = pc(portal_type='siyavula.what.question',
+                    relatedContentId=context_uuid)
+        self.assertTrue(
+            brains[0].getObject() == question,
+            'Related content indexed incorrectly.'
+        )
+
     def _createQuestion(self):
         container = self.portal.questions
         new_id = container.generateId('question')
