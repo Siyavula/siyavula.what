@@ -105,15 +105,20 @@ class TestQuestion(SiyavulaWhatTestBase):
             'Question workflow is incorrect'
         )
 
-    def test_related_content(self):
+    def test_attributes(self):
         container = self.portal.questions
         question = self._createQuestion()
         self.assertEqual(
+            question.text,
+            'test question 01',
+            'Text set incorrectly.'
+        )
+        self.assertEqual(
             container,
             question.relatedContent.to_object,
-            'Related coontent set incorrectly.'
+            'Related content set incorrectly.'
         )
-    
+
     def test_add_answer(self):
         question = self._createQuestion()
         new_id = question.generateId('answer')
@@ -155,6 +160,22 @@ class TestAnswer(SiyavulaWhatTestBase):
         self.failUnless(IAnswer.providedBy(new_object))
 
     def test_answer_workflow(self):
+        question = self._createQuestion()
+        answer = self._createAnswer(question)
+        wft = getToolByName(self.portal, 'portal_workflow')
+        self.assertEqual(
+            wft.getChainFor(answer),
+            (),
+            'Answer workflow is incorrect'
+        )
+           
+    def test_attributes(self):
+        question = self._createQuestion()
+        answer = self._createAnswer(question)
+        self.assertEqual(
+            answer.text, 'test answer 01', 'Answer text incorrect')
+    
+    def _createQuestion(self):
         context = self.portal.questions
         newid = context.invokeFactory(
             'siyavula.what.question',
@@ -162,15 +183,13 @@ class TestAnswer(SiyavulaWhatTestBase):
             text='test question 01',
         )
         question = context._getOb(newid)
+        return question
+
+    def _createAnswer(self, question):
         newid = question.invokeFactory(
             'siyavula.what.answer',
             id='testanswer01',
             text='test answer 01',
         )
         answer = question._getOb(newid)
-        wft = getToolByName(self.portal, 'portal_workflow')
-        self.assertEqual(
-            wft.getChainFor(answer),
-            (),
-            'Answer workflow is incorrect'
-        )
+        return answer
