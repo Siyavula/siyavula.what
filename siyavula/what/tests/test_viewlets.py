@@ -66,6 +66,21 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
             'Create question failed.'
         )
 
+    def test_create_question_wrong_submit_data(self):
+        manager_name = 'plone.belowcontent'
+        viewlet_name = 'question-add'
+        layer = ISiyavulaWhatLayer
+        viewlet = self._find_viewlet(manager_name, viewlet_name, layer)
+
+        request = self.portal.REQUEST
+        request.form['form.submitted'] = 'submitted'
+        request.form['question'] = 'first question'
+        viewlet[0].update()
+        self.assertTrue(
+            len(self.portal.questions) == 0,
+            'Should not have created a question.'
+        )
+
 class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     """ Test questions list viewlet """
 
