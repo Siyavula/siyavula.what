@@ -41,4 +41,20 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="*"
+        name="add-answer"
+        class=".views.AddAnswerView"
+        permission="zope2.View"
+        attribute="addAnswer"
+        />
+
+    <browser:page
+        for="*"
+        name="add-answer-json"
+        class=".views.AddAnswerView"
+        attribute="addAnswerJSON"
+        permission="zope2.View"
+        />
+
 </configure>
