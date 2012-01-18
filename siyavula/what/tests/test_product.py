@@ -1,6 +1,9 @@
 import os
 
 from Products.CMFCore.utils import getToolByName
+from plone.browserlayer.utils import registered_layers
+
+from siyavula.what.interfaces import ISiyavulaWhatLayer
 
 from base import SiyavulaWhatTestBase
 from base import PROJECTNAME
@@ -11,7 +14,10 @@ dirname = os.path.dirname(__file__)
 
 class TestProductInstallation(SiyavulaWhatTestBase):
     def test_layer(self):
-        pass        
+        self.assertTrue(
+            ISiyavulaWhatLayer in registered_layers(),
+            'Custom layer not available.'
+        )
 
     def test_setuphandlers(self):
         self.assertTrue(
