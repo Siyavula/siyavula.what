@@ -28,7 +28,7 @@ class IQuestion(form.Schema, IImageScaleTraversable):
     A question about a piece of content.
     """
 
-    question = schema.Text(
+    text = schema.Text(
         title=_(u"Question"),
         description=_("The question."),
         required=True,
@@ -53,7 +53,7 @@ class Question(dexterity.Container):
     grok.implements(IQuestion)
 
     def Title(self):
-        return self.question
+        return self.text
 
     def setTitle(self, value):
         pass

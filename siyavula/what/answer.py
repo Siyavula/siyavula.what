@@ -26,12 +26,18 @@ class IAnswer(form.Schema, IImageScaleTraversable):
     An answer.
     """
 
+    text = schema.Text(
+        title=_(u"Answer"),
+        description=_("The answer."),
+        required=True,
+    )
+
+
 class Answer(dexterity.Item):
     grok.implements(IAnswer)
 
+    def Title(self):
+        return self.text
 
-class SampleView(grok.View):
-    grok.context(IAnswer)
-    grok.require('zope2.View')
-    
-    # grok.name('view')
+    def setTitle(self, value):
+        pass
