@@ -1,4 +1,5 @@
 import json
+from zExceptions import NotFound
 from zope.component import getUtility
 from zope.app.intid.interfaces import IIntIds
 from z3c.relationfield import RelationValue
@@ -15,24 +16,63 @@ class AddQuestionView(BrowserView):
         request = self.request
         context = self.context
 
+        question_text = request.get('question', '')
+        if not question_text:
+            return
+
         portal = context.restrictedTraverse('@@plone_portal_state').portal()
         questions = portal._getOb('questions')
         new_id = questions.generateId('question')
         intids = getUtility(IIntIds)
         related_id = intids.getId(context)
-        question_text = request.get('question')
 
         questions.invokeFactory('siyavula.what.question',
                                 id=new_id,
                                 relatedContent=RelationValue(related_id),
-                                question=question_text)
+                                text=question_text)
         
         question = questions._getOb(new_id)
         return question
 
     def addQuestionJSON(self):
         question = self.addQuestion() 
-        message = "Question %s was added" %question.question
+        message = "Question %s was added" %question.text
+        result = 'success'
+        return json.dumps({result: result,
+                           message: message})
+
+
+class AddAnswerView(BrowserView):
+    """ Add an answer for a given the question.
+    """
+    def addAnswer(self):
+        request = self.request
+        context = self.context
+
+        answer_text = request.get('answer', '')
+        if not answer_text:
+            return
+
+        portal = context.restrictedTraverse('@@plone_portal_state').portal()
+        questions = portal._getOb('questions')
+
+        questionid = self.request.get('questionid', None)
+        question = questions._getOb(questionid)
+        if not question:
+            raise NotFound('The question %s could not be found.' %questionid)
+
+        new_id = question.generateId('answer')
+
+        question.invokeFactory('siyavula.what.answer',
+                                id=new_id,
+                                text=answer_text)
+        
+        answer = question._getOb(new_id)
+        return answer
+
+    def addAnswerJSON(self):
+        answer = self.addAnswer() 
+        message = "Answer %s was added" %answer.text
         result = 'success'
         return json.dumps({result: result,
                            message: message})
