@@ -19,7 +19,7 @@ class AddQuestionView(BrowserView):
         questions = portal._getOb('questions')
         new_id = questions.generateId('question')
         intids = getUtility(IIntIds)
-        related_id = intids.getId(self.context)
+        related_id = intids.getId(context)
         question_text = request.get('question')
 
         questions.invokeFactory('siyavula.what.question',
