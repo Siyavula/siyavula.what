@@ -11,7 +11,9 @@ class QuestionsListViewlet(ViewletBase):
     def update(self):
         super(QuestionsListViewlet, self).update()
         # get all questions relating to this context
+        import pdb;pdb.set_trace()
         context = self.context
     
     def questions(self):
+        import pdb;pdb.set_trace()
         return []

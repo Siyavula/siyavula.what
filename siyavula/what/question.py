@@ -1,5 +1,7 @@
 from five import grok
 from plone.directives import dexterity, form
+from plone.indexer import indexer
+from plone.uuid.interfaces import IUUID
 
 from zope import schema
 from zope.schema.interfaces import IContextSourceBinder
@@ -38,6 +40,13 @@ class IQuestion(form.Schema, IImageScaleTraversable):
             object_provides='Products.CMFCore.interfaces._content.IContentish'),
         required=False,
     )
+
+
+@indexer(IQuestion)
+def relatedContentUID(obj):
+    uuid = IUUID(obj.relatedContent.to_object)
+    return uuid
+grok.global_adapter(relatedContentUID, name="relatedContentUID")
 
 
 class Question(dexterity.Container):

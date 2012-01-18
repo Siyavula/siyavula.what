@@ -17,18 +17,18 @@ class AddQuestionView(BrowserView):
 
         portal = context.restrictedTraverse('@@plone_portal_state').portal()
         questions = portal._getOb('questions')
-        id = questions.generateId('question')
-        questions.invokeFactory('siyavula.what.question', id=id)
-        question = questions._getOb(id)
-        question.question = request.get('question')
-        
+        new_id = questions.generateId('question')
         intids = getUtility(IIntIds)
-        try:
-            new_id = intids.getId(self.context)
-            question.relatedContent = RelationValue(new_id)
-            return question
-        except:
-            raise 'Cannot calculate intid for %s' %self.context.getId()
+        related_id = intids.getId(self.context)
+        question_text = request.get('question')
+
+        questions.invokeFactory('siyavula.what.question',
+                                id=new_id,
+                                relatedContent=RelationValue(related_id),
+                                question=question_text)
+        
+        question = questions._getOb(new_id)
+        return question
 
     def addQuestionJSON(self):
         question = self.addQuestion() 
