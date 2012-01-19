@@ -34,6 +34,22 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="*"
+        name="delete-question"
+        class=".views.DeleteQuestionView"
+        permission="zope2.View"
+        attribute="deleteQuestion"
+        />
+
+    <browser:page
+        for="*"
+        name="delete-question-json"
+        class=".views.DeleteQuestionView"
+        attribute="deleteQuestionJSON"
+        permission="zope2.View"
+        />
+
     <browser:viewlet
         for="Products.CMFCore.interfaces._content.IContentish"
         name="questions-list"
@@ -56,6 +72,22 @@
         name="add-answer-json"
         class=".views.AddAnswerView"
         attribute="addAnswerJSON"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        for="*"
+        name="delete-answer"
+        class=".views.DeleteAnswerView"
+        permission="zope2.View"
+        attribute="deleteAnswer"
+        />
+
+    <browser:page
+        for="*"
+        name="delete-answer-json"
+        class=".views.DeleteAnswerView"
+        attribute="deleteAnswerJSON"
         permission="zope2.View"
         />
 
