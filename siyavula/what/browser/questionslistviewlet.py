@@ -20,6 +20,15 @@ class QuestionsListViewlet(ViewletBase):
             answer = view()
             self.request.response.redirect(self.context.absolute_url())
 
+    def render(self):
+        if self.allowQuestions():
+            return super(QuestionsListViewlet, self).render()
+        else:
+            return ""
+    
+    def allowQuestions(self):
+        allow = getattr(self.context, 'allowQuestions', False)
+        return allow
     
     def questions(self):
         context = self.context

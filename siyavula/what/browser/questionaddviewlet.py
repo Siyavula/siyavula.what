@@ -15,3 +15,13 @@ class QuestionAddViewlet(ViewletBase):
             view = self.context.restrictedTraverse('@@add-question')
             question = view()
             self.request.response.redirect(self.context.absolute_url())
+
+    def render(self):
+        if self.allowQuestions():
+            return super(QuestionAddViewlet, self).render()
+        else:
+            return ""
+    
+    def allowQuestions(self):
+        allow = getattr(self.context, 'allowQuestions', False)
+        return allow
