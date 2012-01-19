@@ -155,3 +155,23 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
             len(question) == 0,
             'Should not have created an answer.'
         )
+    
+    def test_questions(self):
+        questions = []
+        for i in range(0,5):
+            questions.append(self._createQuestion())
+
+        context = self.portal.questions
+        manager_name = 'plone.belowcontent'
+        viewlet_name = 'questions-list'
+        layer = ISiyavulaWhatLayer
+        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        viewlet_questions = viewlet[0].questions()
+
+        self.assertTrue(
+            len(viewlet_questions) == 5,
+            'List questions viewlet did not find correct questions.'
+        )
+
+        for question in questions:
+            self.assertTrue(question in viewlet_questions)
