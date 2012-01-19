@@ -30,13 +30,11 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
-    <plone:behavior
-        title="Allow Questions Behavior"
-        description="Enable and disable questions on dexterity content."
-        provides=".allowquestionsbehavior.IAllowQuestionsBehavior"
-        factory=".allowquestionsbehavior.AllowQuestionsBehavior"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        />
-
+  <plone:behavior
+      title="Allow Questions Behavior"
+      description="Enable and disable questions on dexterity content."
+      provides=".behaviors.allowquestionsbehavior.IAllowQuestionsBehavior"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      />
 
 </configure>
