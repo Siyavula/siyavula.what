@@ -14,6 +14,7 @@
   <grok:grok package="." />
 
   <include package=".browser" />
+  <include package=".extenders" />
   
   <i18n:registerTranslations directory="locales" />
 
@@ -28,5 +29,14 @@
       />
 
   <!-- -*- extra stuff goes here -*- -->
+
+    <plone:behavior
+        title="Allow Questions Behavior"
+        description="Enable and disable questions on dexterity content."
+        provides=".allowquestionsbehavior.IAllowQuestionsBehavior"
+        factory=".allowquestionsbehavior.AllowQuestionsBehavior"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        />
+
 
 </configure>
