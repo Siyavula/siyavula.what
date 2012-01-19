@@ -69,8 +69,7 @@ class SiyavulaWhatTestBase(unittest.TestCase):
         answer = question._getOb(newid)
         return answer
     
-    def _find_viewlet(self, manager_name, viewlet_name, layer=None):
-        context = self.portal.questions
+    def _find_viewlet(self, context, manager_name, viewlet_name, layer=None):
         request = self.portal.REQUEST
         if layer:
             alsoProvides(request, layer)
