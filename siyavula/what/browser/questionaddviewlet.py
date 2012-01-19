@@ -17,11 +17,17 @@ class QuestionAddViewlet(ViewletBase):
             self.request.response.redirect(self.context.absolute_url())
 
     def render(self):
+        """ We render an empty string when a specific piece of content
+            does not allow questions.
+        """
         if self.allowQuestions():
             return super(QuestionAddViewlet, self).render()
         else:
             return ""
     
     def allowQuestions(self):
+        """ Check if the content in question (self.context) allows
+            questions.
+        """
         allow = getattr(self.context, 'allowQuestions', False)
         return allow

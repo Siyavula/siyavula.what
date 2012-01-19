@@ -21,16 +21,25 @@ class QuestionsListViewlet(ViewletBase):
             self.request.response.redirect(self.context.absolute_url())
 
     def render(self):
+        """ We render an empty string when a specific piece of content
+            does not allow questions.
+        """
         if self.allowQuestions():
             return super(QuestionsListViewlet, self).render()
         else:
             return ""
     
     def allowQuestions(self):
+        """ Check if the content in question (self.context) allows
+            questions.
+        """
         allow = getattr(self.context, 'allowQuestions', False)
         return allow
     
     def questions(self):
+        """ Return all questions that have the current context set
+            as 'relatedContent'.
+        """
         context = self.context
         uuid = IUUID(context)
         pc = getToolByName(context, 'portal_catalog')
