@@ -8,7 +8,8 @@
                 </li>  
             </ul>
             <div id="answer-form">
-                <form id="form.answer" name="form.answer" action="." method="POST">
+                <form id="form.answer" name="form.answer" action="." method="POST"
+                    tal:attributes="action context/absolute_url">
                     <input type="hidden" id="siyavula.what.questionslist.form.submitted" name="siyavula.what.questionslist.form.submitted" value="submitted" />
                     <input id="answer" name="answer" value="">
                     <input type="hidden" id="questionid" name="questionid" value=""
