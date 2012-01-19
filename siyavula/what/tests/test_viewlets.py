@@ -1,17 +1,5 @@
 import os
 
-from zope.interface import alsoProvides 
-from zope.component import queryMultiAdapter
-from zope.viewlet.interfaces import IViewletManager
-
-from Products.Five.browser import BrowserView as View
-
-from plone.uuid.interfaces import IUUID
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-
-from z3c.relationfield.relation import create_relation
-
 from base import SiyavulaWhatTestBase
 from base import PROJECTNAME
 from base import INTEGRATION_TESTING
@@ -64,6 +52,7 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
         request = self.portal.REQUEST
         request.form['siyavula.what.questionadd.form.submitted'] = 'submitted'
         request.form['question'] = 'first question'
+        request.form['action'] = 'add-question'
         viewlet[0].update()
         self.assertTrue(
             len(self.portal.questions) == 1,
@@ -85,16 +74,21 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
             len(self.portal.questions) == 0,
             'Should not have created a question.'
         )
+    
 
 class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     """ Test questions list viewlet """
 
-    def test_viewletexists_in_custom_layer(self):
+    def _get_list_viewlet(self): 
         context = self.portal.questions
         manager_name = 'plone.belowcontent'
         viewlet_name = 'questions-list'
         layer = ISiyavulaWhatLayer
-        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        viewlets = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        return viewlets[0]
+
+    def test_viewletexists_in_custom_layer(self):
+        viewlet = self._get_list_viewlet()
         self.assertTrue(viewlet, 'Questions-list viewlet not found.')
 
     def test_viewlet_not_in_default_layer(self):
@@ -106,15 +100,11 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     
     def test_create_answer_without_text(self):
         question = self._createQuestion()
-        context = self.portal.questions
-        manager_name = 'plone.belowcontent'
-        viewlet_name = 'questions-list'
-        layer = ISiyavulaWhatLayer
-        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        viewlet = self._get_list_viewlet()
 
         request = self.portal.REQUEST
         request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
-        viewlet[0].update()
+        viewlet.update()
         self.assertTrue(
             len(question) == 0,
             'Cannot create answer without text.'
@@ -122,17 +112,14 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
     def test_create_answer_with_text(self):
         question = self._createQuestion()
-        context = self.portal.questions
-        manager_name = 'plone.belowcontent'
-        viewlet_name = 'questions-list'
-        layer = ISiyavulaWhatLayer
-        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        viewlet = self._get_list_viewlet()
 
         request = self.portal.REQUEST
         request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
         request.form['questionid'] = question.getId()
         request.form['answer'] = 'first answer'
-        viewlet[0].update()
+        request.form['action'] = 'add-answer'
+        viewlet.update()
         self.assertTrue(
             len(question) == 1,
             'Create answer failed.'
@@ -140,17 +127,13 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
     def test_create_answer_wrong_submit_data(self):
         question = self._createQuestion()
-        context = self.portal.questions
-        manager_name = 'plone.belowcontent'
-        viewlet_name = 'questions-list'
-        layer = ISiyavulaWhatLayer
-        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
+        viewlet = self._get_list_viewlet()
 
         request = self.portal.REQUEST
         request.form['form.submitted'] = 'submitted'
         request.form['answer'] = 'first answer'
         request.form['questionid'] = question.getId()
-        viewlet[0].update()
+        viewlet.update()
         self.assertTrue(
             len(question) == 0,
             'Should not have created an answer.'
@@ -161,12 +144,8 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
         for i in range(0,5):
             questions.append(self._createQuestion())
 
-        context = self.portal.questions
-        manager_name = 'plone.belowcontent'
-        viewlet_name = 'questions-list'
-        layer = ISiyavulaWhatLayer
-        viewlet = self._find_viewlet(context, manager_name, viewlet_name, layer)
-        viewlet_questions = viewlet[0].questions()
+        viewlet = self._get_list_viewlet()
+        viewlet_questions = viewlet.questions()
 
         self.assertTrue(
             len(viewlet_questions) == 5,
@@ -175,3 +154,60 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
         for question in questions:
             self.assertTrue(question in viewlet_questions)
+
+    def test_delete_question(self):
+        question = self._createQuestion()
+        viewlet = self._get_list_viewlet()
+
+        request = self.portal.REQUEST
+        request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
+        request.form['questionid'] = question.getId()
+        request.form['action'] = 'delete-question'
+        viewlet.update()
+
+        self.assertTrue(
+            len(self.portal.questions.objectIds()) == 0,
+            'Question was not deleted.'
+        )
+
+    def test_delete_question_with_wrong_data(self):
+        question = self._createQuestion()
+        viewlet = self._get_list_viewlet()
+
+        request = self.portal.REQUEST
+        request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
+        request.form['questionid'] = question.getId()
+        viewlet.update()
+
+        self.assertTrue(
+            len(self.portal.questions.objectIds()) > 0,
+            'Question should not have been deleted.'
+        )
+
+    def test_author(self):
+        question = self._createQuestion()
+        viewlet = self._get_list_viewlet()
+        self.assertEqual(
+            viewlet.author(question), question.Creator(),
+            'Author incorrect.'
+        )
+
+    def test_author_image(self):
+        question = self._createQuestion()
+        viewlet = self._get_list_viewlet()
+        pmt = self.portal.portal_membership
+        image = pmt.getPersonalPortrait(question.Creator()).absolute_url()
+        self.assertEqual(
+            viewlet.author_image(question), image,
+            'Image incorrect.'
+        )
+    
+    def test_get_author_home_url(self):
+        question = self._createQuestion()
+        viewlet = self._get_list_viewlet()
+        home_url = "%s/author/%s" % (self.portal.portal_url(), question.Creator())
+        self.assertEqual(
+            viewlet.get_author_home_url(question), home_url,
+            'Home URL incorrect.'
+        )
+
