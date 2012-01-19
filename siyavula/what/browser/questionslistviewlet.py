@@ -16,8 +16,13 @@ class QuestionsListViewlet(ViewletBase):
 
         # if the form was not posted to this method we do nothing
         if self.request.form.get('siyavula.what.questionslist.form.submitted'):
-            view = self.context.restrictedTraverse('@@add-answer')
-            answer = view()
+            action = self.request.form.get('action', '').lower()
+            if not action: return
+           
+            # action can be 'add-answer' or 'delete-answer'
+            viewname = '@@%s' %action
+            view = self.context.restrictedTraverse(viewname)
+            view()
             self.request.response.redirect(self.context.absolute_url())
 
     def render(self):
@@ -49,3 +54,23 @@ class QuestionsListViewlet(ViewletBase):
                 }
         brains = pc(query)
         return brains and [b.getObject() for b in brains] or []
+
+    def author(self, question):
+        return question.Creator()
+
+    def author_image(self, question):
+        username = question.Creator()
+        if username is None:
+            # return the default user image if no username is given
+            return 'defaultUser.gif'
+        else:
+            pmt = getToolByName(self.context, 'portal_membership')
+            return pmt.getPersonalPortrait(username).absolute_url()
+
+        
+    def get_author_home_url(self, question):
+        username = question.Creator()
+        if username is None:
+            return None
+        else:
+            return "%s/author/%s" % (self.context.portal_url(), username)

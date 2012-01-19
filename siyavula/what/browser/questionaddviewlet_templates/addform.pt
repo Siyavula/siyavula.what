@@ -1,9 +1,31 @@
-<div>
-    Submit a question for our subject matter experts.
-    <form id="form.add.question" action="." method="POST"
-        tal:attributes="action context/absolute_url">
-        <input id="question" name="question" value="" />
-        <input type="hidden" id="siyavula.what.questionadd.form.submitted" name="siyavula.what.questionadd.form.submitted" value="submitted" />
-        <button type="submit" id="button.add.question">Submit question</button>
-    </form>
+<div class="reply" id="commenting">
+    <fieldset>
+        <legend>Add a question</legend>
+        <p>You can add a question by filling out the form below. Plain text formatting.</p>
+
+        <form enctype="multipart/form-data" method="post" class="rowlike"
+            action="." tal:attributes="action context/absolute_url">
+
+            <input type="hidden" id="siyavula.what.questionadd.form.submitted"
+                name="siyavula.what.questionadd.form.submitted" value="submitted" />
+            <input type="hidden" value="add-question" name="action">
+
+            <div id="question-container" class="field">
+                <label class="horizontal" for="form-widgets-text">
+                    Question 
+                </label>
+                <span style="color: red" title="Required" class="required horizontal">
+                    ■
+                </span>
+                <div class="fieldErrorBox"></div>
+                <textarea class="textarea-widget required text-field autoresize"
+                    name="question" id="question"></textarea>
+            </div>
+
+            <div class="formControls">
+                <input type="submit" value="Submit" class="submit-widget button-field context"
+                    name="button.submit" id="button.submit">
+            </div>
+        </form>
+    </fieldset>
 </div>
