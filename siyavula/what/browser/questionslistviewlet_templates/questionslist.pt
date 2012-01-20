@@ -6,6 +6,7 @@
                      author_home_url python:view.get_author_home_url(question);
                      question_date question/created;
                      questionid question/getId;
+                     can_delete python:view.can_delete(question);
                      action context/absolute_url">
 
         <div id="question_id" class="comment state-published">
@@ -45,7 +46,8 @@
                         <input type="hidden" value="" name="questionid"
                             tal:attributes="value questionid">
                         <input type="hidden" value="delete-question" name="action">
-                        <input type="submit" value="Delete" class="destructive allowMultiSubmit"
+                        <input tal:condition="can_delete"
+                            type="submit" value="Delete" class="destructive allowMultiSubmit"
                             name="action.button">
                     </form>
                 </div>

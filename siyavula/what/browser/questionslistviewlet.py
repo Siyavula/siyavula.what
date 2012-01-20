@@ -74,3 +74,7 @@ class QuestionsListViewlet(ViewletBase):
             return None
         else:
             return "%s/author/%s" % (self.context.portal_url(), username)
+
+    def can_delete(self, question):
+        pmt = getToolByName(self.context, 'portal_membership')
+        return pmt.checkPermission('Delete objects', question) and True or False
