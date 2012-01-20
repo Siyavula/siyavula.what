@@ -5,3 +5,10 @@ Changelog
 -------------------
 
 - Initial release
+
+0.1a (unreleased)
+-----------------
+    
+- Added eventhandler to notify question creator of answers.
+- Questions now start their workflow life as 'submitted'.
+    - run at least the workflowtool profile steps and do a security update.
