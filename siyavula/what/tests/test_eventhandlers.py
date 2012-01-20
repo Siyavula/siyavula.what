@@ -1,5 +1,7 @@
 import os
 
+from Acquisition import aq_base
+
 from zope.component import getSiteManager
 from zope.component import eventtesting
 from zope.lifecycleevent import IObjectModifiedEvent
@@ -23,6 +25,10 @@ class TestEventHandlers(SiyavulaWhatTestBase):
     def setUp(self):
         super(TestEventHandlers, self).setUp()
         eventtesting.setUp()
+        self.setupMailHost()
+
+    def beforeTearDown(self):
+        self.restoreMailHost()
 
     def _test_question_answered(self):
         context = self.portal.questions
@@ -62,12 +68,6 @@ class TestEventHandlers(SiyavulaWhatTestBase):
         )
     
     def test_questionAnswered(self):
-        self.portal._original_MailHost = self.portal.MailHost
-        self.portal.MailHost = mailhost = MockMailHost('MailHost')
-        sm = getSiteManager(context=self.portal)
-        sm.unregisterUtility(provided=IMailHost)
-        sm.registerUtility(mailhost, provided=IMailHost)
-
         question = self._createQuestion()
         pmt = self.portal.portal_membership
         pmt.getMemberById('test_user_1_').setMemberProperties(
@@ -76,11 +76,19 @@ class TestEventHandlers(SiyavulaWhatTestBase):
 
         event = ObjectModifiedEvent(question)
         errors = questionAnswered(question, event)
-
+        
+        mailhost = self.portal.MailHost
         self.assertTrue(errors is None, 'Errors were reported.')
         self.assertTrue(mailhost.messages, 'No message in mailhost.')
 
-    def beforeTearDown(self):
+    def setupMailHost(self):
+        self.portal._original_MailHost = self.portal.MailHost
+        self.portal.MailHost = mailhost = MockMailHost('MailHost')
+        sm = getSiteManager(context=self.portal)
+        sm.unregisterUtility(provided=IMailHost)
+        sm.registerUtility(mailhost, provided=IMailHost)
+
+    def restoreMailHost(self):
         self.portal.MailHost = self.portal._original_MailHost
         sm = getSiteManager(context=self.portal)
         sm.unregisterUtility(provided=IMailHost)
