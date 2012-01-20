@@ -31,10 +31,6 @@ class AddQuestionView(BrowserView):
                                 text=question_text)
         
         question = questions._getOb(new_id)
-
-        wft = getToolByName(self.context, 'portal_workflow')
-        wft.doActionFor(question, 'submit')
-
         return question
 
     def addQuestionJSON(self):
