@@ -65,7 +65,8 @@
                         <input type="hidden" value="" name="answerid"
                             tal:attributes="value answer/getId">
                         <input type="hidden" value="delete-answer" name="action">
-                        <input type="submit" value="Delete" class="destructive allowMultiSubmit"
+                        <input tal:condition="python:view.can_delete_answer(answer)"
+                            type="submit" value="Delete" class="destructive allowMultiSubmit"
                             name="action.button">
                     </form>
                 </div>

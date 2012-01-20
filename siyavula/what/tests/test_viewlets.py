@@ -1,9 +1,12 @@
 import os
 
 from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView as View
+from plone.app.testing import login, logout
 
 from base import SiyavulaWhatTestBase
 
+from siyavula.what.browser.questionslistviewlet import QuestionsListViewlet 
 from siyavula.what.interfaces import ISiyavulaWhatLayer
 
 dirname = os.path.dirname(__file__)
@@ -87,6 +90,11 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
 
 class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     """ Test questions list viewlet """
+    
+    def setUp(self):
+        super(TestQuestionsListViewlet, self).setUp()
+        acl_users = getToolByName(self.portal, 'acl_users')
+        acl_users.userFolderAddUser('user1', 'secret', ['Member'], [])        
 
     def _get_list_viewlet(self): 
         context = self.portal.questions
@@ -227,4 +235,56 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
             viewlet.get_author_home_url(question), home_url,
             'Home URL incorrect.'
         )
+    
+    def test_can_delete_question_as_creator(self):
+        question = self._createQuestion()
+        viewlet = self._get_viewlet()
 
+        can_delete = viewlet.can_delete(question)
+        self.assertEqual(
+            can_delete, True,
+            'Creator cannot delete question.'
+        )
+
+    def test_can_delete_question_as_member(self):
+        question = self._createQuestion()
+        logout()
+        login(self.portal, 'user1')
+        viewlet = self._get_viewlet()
+
+        can_delete = viewlet.can_delete(question)
+        self.assertEqual(
+            can_delete, False,
+            'Only creator and admin may delete questions.'
+        )
+
+    def test_can_delete_answer_as_creator(self):
+        question = self._createQuestion()
+        answer = self._createAnswer(question)
+        viewlet = self._get_viewlet()
+
+        can_delete = viewlet.can_delete_answer(answer)
+        self.assertEqual(
+            can_delete, True,
+            'Creator cannot answer.'
+        )
+
+    def test_can_delete_answer_as_member(self):
+        question = self._createQuestion()
+        answer = self._createAnswer(question)
+        logout()
+        login(self.portal, 'user1')
+        viewlet = self._get_viewlet()
+
+        can_delete = viewlet.can_delete_answer(answer)
+        self.assertEqual(
+            can_delete, False,
+            'Only creator and admin may delete answers.'
+        )
+
+    def _get_viewlet(self):
+        request = self.portal.REQUEST
+        context = self.portal.questions
+        view = View(context, request)
+        viewlet = QuestionsListViewlet(context, request, view, None) 
+        return viewlet

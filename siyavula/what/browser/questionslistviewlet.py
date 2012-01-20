@@ -78,3 +78,10 @@ class QuestionsListViewlet(ViewletBase):
     def can_delete(self, question):
         pmt = getToolByName(self.context, 'portal_membership')
         return pmt.checkPermission('Delete objects', question) and True or False
+
+    def can_delete_answer(self, answer):
+        pmt = getToolByName(self.context, 'portal_membership')
+        portal_properties = getToolByName(self.context, 'portal_properties')
+        encoding = portal_properties.get('default_charset', 'utf-8')
+        member = pmt.getAuthenticatedMember().getId().encode(encoding)
+        return answer.Creator() == member and True or False
