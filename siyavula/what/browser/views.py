@@ -2,6 +2,8 @@ import json
 from zExceptions import NotFound
 from z3c.relationfield.relation import create_relation
 
+from Products.CMFCore.utils import getToolByName
+
 from Products.Five import BrowserView
 from siyavula.what import MessageFactory as _
 
@@ -29,6 +31,10 @@ class AddQuestionView(BrowserView):
                                 text=question_text)
         
         question = questions._getOb(new_id)
+
+        wft = getToolByName(self.context, 'portal_workflow')
+        wft.doActionFor(question, 'submit')
+
         return question
 
     def addQuestionJSON(self):
@@ -125,3 +131,6 @@ class DeleteAnswerView(BrowserView):
                            message: message})
 
 
+class AnsweredMessageView(BrowserView):
+    def __call__(self):
+        return self.index()

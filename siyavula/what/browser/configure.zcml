@@ -91,4 +91,12 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="*"
+        name="answered-message"
+        class=".views.AnsweredMessageView"
+        template="answeredmessage_templates/email.pt"
+        permission="zope2.View"
+        />
+
 </configure>

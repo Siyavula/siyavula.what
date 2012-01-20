@@ -37,4 +37,11 @@
       for="plone.dexterity.interfaces.IDexterityContent"
       />
 
+  <!-- event handlers -->
+  <subscriber
+      for="siyavula.what.question.IQuestion
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler=".eventhandlers.questionAnswered"
+      />
+
 </configure>
