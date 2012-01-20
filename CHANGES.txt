@@ -1,0 +1,7 @@
+Version 0.1a
+============
+    
+    Added eventhandler to notify question creator of answers.
+    Questions now start their workflow life as 'submitted'.
+    - be sure to run at least the workflowtool profile steps and do a security update.
+
