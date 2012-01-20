@@ -1,8 +1,8 @@
 import os
 
+from Products.CMFCore.utils import getToolByName
+
 from base import SiyavulaWhatTestBase
-from base import PROJECTNAME
-from base import INTEGRATION_TESTING
 
 from siyavula.what.interfaces import ISiyavulaWhatLayer
 
@@ -54,9 +54,18 @@ class TestQuestionAddViewlet(SiyavulaWhatTestBase):
         request.form['question'] = 'first question'
         request.form['action'] = 'add-question'
         viewlet[0].update()
+
         self.assertTrue(
             len(self.portal.questions) == 1,
             'Create question failed.'
+        )
+        
+        question = self.portal.questions.objectValues()[0]
+        wft = getToolByName(question, 'portal_workflow')
+        review_state = wft.getInfoFor(question, 'review_state', 'question_workflow')
+        self.assertEqual(
+            review_state, 'submitted',
+            'The question should be in review state "submitted"'
         )
 
     def test_create_question_wrong_submit_data(self):
@@ -120,9 +129,17 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
         request.form['answer'] = 'first answer'
         request.form['action'] = 'add-answer'
         viewlet.update()
+
         self.assertTrue(
             len(question) == 1,
             'Create answer failed.'
+        )
+
+        wft = getToolByName(question, 'portal_workflow')
+        review_state = wft.getInfoFor(question, 'review_state', 'question_workflow')
+        self.assertEqual(
+            review_state, 'answered',
+            'The question should be in review state "answered"'
         )
 
     def test_create_answer_wrong_submit_data(self):
