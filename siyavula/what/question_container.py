@@ -29,4 +29,3 @@ class IQuestioncontainer(form.Schema, IImageScaleTraversable):
 
 class Questioncontainer(dexterity.Container):
     grok.implements(IQuestioncontainer)
-    

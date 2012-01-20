@@ -4,8 +4,9 @@ from Products.CMFCore.utils import getToolByName
 
 log = logging.getLogger('siyavula.what-setuphandlers')
 
+
 def setupWhat(portal):
-    """ Create the basic structure and do initial configuration. 
+    """ Create the basic structure and do initial configuration.
     """
     sections = [
         {'id': 'questions',
@@ -22,8 +23,8 @@ def setupWhat(portal):
                 id=section_dict['id'],
                 title=section_dict['title'],
                 exclude_from_nav=section_dict.get('exclude_from_nav', False),
-            ) 
-        
+            )
+
 
 def setupVarious(context):
     if context.readDataFile('siyavula.what-marker.txt') is None:
