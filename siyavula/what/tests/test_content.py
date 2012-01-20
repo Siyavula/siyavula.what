@@ -103,6 +103,14 @@ class TestQuestion(SiyavulaWhatTestBase):
             ('question_workflow',),
             'Question workflow is incorrect'
         )
+        review_state = wft.getInfoFor(
+            question, 'review_state', 'question_workflow')
+        self.assertEqual(
+            review_state,
+            'submitted',
+            'Question starts in wrong review state.'
+        )
+
 
     def test_attributes(self):
         container = self.portal.questions
