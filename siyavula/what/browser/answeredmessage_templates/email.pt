@@ -1,1 +1,20 @@
-Your question was answered.
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="siyavula.what">
+    <body tal:define="question nocall:context;
+                      relatedcontent view/related_content;">
+
+        <h2 class="toc" i18n:translate="message_answered_heading">There is an answer.</h2>
+        <p>Your question was answered.</p>
+        <p>To see the answer go to:</p>
+        <p><a href="#" tal:attributes="href relatedcontent/absolute_url"
+                tal:content="question/Title">
+                Question link
+           </a>
+        </p>
+
+    </body>
+</html>

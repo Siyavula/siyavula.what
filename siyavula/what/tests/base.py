@@ -1,3 +1,5 @@
+import difflib
+
 from Products.CMFCore.utils import getToolByName
 
 from z3c.relationfield.relation import create_relation
@@ -46,6 +48,11 @@ class SiyavulaWhatTestBase(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer['portal']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    def diff(self, a, b):
+        return '\n'.join(
+            difflib.unified_diff(a.splitlines(), b.splitlines())
+            )
 
     def _createQuestion(self):
         container = self.portal.questions

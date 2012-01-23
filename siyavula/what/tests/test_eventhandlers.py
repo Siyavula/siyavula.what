@@ -73,13 +73,23 @@ class TestEventHandlers(SiyavulaWhatTestBase):
         pmt.getMemberById('test_user_1_').setMemberProperties(
             {'email': 'tester@example.com'})
         self.portal.email_from_address = 'admin@example.com'
-
+        self.portal.REQUEST['ACTUAL_URL'] = 'example.com'
         event = ObjectModifiedEvent(question)
         errors = questionAnswered(question, event)
         
         mailhost = self.portal.MailHost
         self.assertTrue(errors is None, 'Errors were reported.')
         self.assertTrue(mailhost.messages, 'No message in mailhost.')
+
+        file = open(os.path.join(
+            dirname, 'data', 'message.txt'), 'r')
+        reference_message = file.read()
+        file.close()
+        returned_message = mailhost.messages[0]
+        self.assertEqual(returned_message, reference_message,
+            'Returned message and reference message '
+            'are not identical: \n\n%s' % self.diff(
+                returned_message, reference_message))
 
     def setupMailHost(self):
         self.portal._original_MailHost = self.portal.MailHost

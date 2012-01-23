@@ -1,0 +1,19 @@
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Cc: 
+To: tester@example.com
+From: admin@example.com
+Subject: Your question was answered.
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <body>
+
+        <h2 class="toc">There is an answer.</h2>
+        <p>Your question was answered.</p>
+        <p>To see the answer go to:</p>
+        <p><a href="http://nohost/plone/questions">test question 01</a>
+        </p>
+
+    </body>
+</html>

@@ -128,5 +128,6 @@ class DeleteAnswerView(BrowserView):
 
 
 class AnsweredMessageView(BrowserView):
-    def __call__(self):
-        return self.index()
+    
+    def related_content(self):
+        return self.context.relatedContent.to_object
