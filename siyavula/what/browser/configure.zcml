@@ -107,4 +107,11 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="siyavula.what.answer.IAnswer"
+        name="render-answer"
+        class=".views.AddAnswerView"
+        template="questionslistviewlet_templates/answer.pt"
+        permission="zope2.View"
+        />
 </configure>

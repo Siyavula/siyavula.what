@@ -7,7 +7,8 @@
                  can_delete python:view.can_delete(context);
                  action context/absolute_url">
 
-    <div id="question_id" class="comment state-published">
+    <div id="question_id" class="comment state-published"
+        tal:attributes="id questionid"> 
         <div class="commentImage" tal:condition="author_image">
             <a href="" tal:condition="author_image"
                        tal:attributes="href author_home_url">
@@ -72,17 +73,20 @@
         
         <div id="answer-container">
             <div id="answer-form">
-                <form id="form.answer" name="form.answer" action="." method="POST"
+                <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
                     tal:attributes="action action">
                     <input type="hidden" 
                         id="siyavula.what.questionslist.form.submitted"
                         name="siyavula.what.questionslist.form.submitted" value="submitted" />
-                    <input type="hidden" id="questionid" name="questionid" value=""
+                    <input type="hidden" class="questionid" name="questionid" value=""
                         tal:attributes="value questionid">
                     <input type="hidden" value="add-answer" name="action">
                     <textarea id="answer" name="answer" 
+                        tal:attributes="id string:${context/id}-add-answer-area"
                         class="textarea-widget required text-field autoresize"></textarea>
-                    <button class="context hide allowMultiSubmit submitting" id="button.add.answer"
+                    <button class="context hide allowMultiSubmit submitting"
+                        id="siyavula-add-answer-button"
+                        tal:attributes="id string:${context/id}-add-answer-button"
                         style="display: inline;">
                         Answer 
                     </button>

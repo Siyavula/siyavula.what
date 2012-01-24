@@ -100,6 +100,12 @@ class AddAnswerView(BrowserView):
         answer = self.addAnswer() 
         message = "Answer %s was added" %answer.text
         result = 'success'
+        view = answer.restrictedTraverse('@@render-answer')
+        html = view()
+        return json.dumps({'result' : result,
+                           'message': message,
+                           'html'   : html})
+
         return json.dumps({result: result,
                            message: message})
     
