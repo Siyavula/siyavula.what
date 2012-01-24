@@ -40,7 +40,23 @@ jq(document).ready(function(){
             context: jq(this).parent(),
         });
     });
+    
+    jq("form[name='delete-question']")
+        .find("input[name='action.button']").click(function(event) {
 
+        event.preventDefault();
+        questionid = jq(this).parent().find('input[name="questionid"]').val();
+        context_url = jq('input#context_url').attr('value');
+        jq.ajax({
+            url: context_url + "/@@delete-question-json",
+            data: {
+                'questionid': questionid,
+            },
+            success: removeQuestion,
+            error: displayError,
+            dataType: "json",
+        });
+    });
 });
 
 function updateQuestions(data, textStatus, jqXHR) {
@@ -52,6 +68,15 @@ function updateQuestions(data, textStatus, jqXHR) {
     }
     jq('div#what-container').append(html);
     jq("textarea#question").attr('value', "");
+}
+
+function removeQuestion(data, textStatus, jqXHR) {
+    var result = data.result;
+    if (result == 'failure') {
+        alert(data.message);
+        return;
+    }
+    element = jq('div#'+data.questionid).remove();
 }
 
 function updateAnswers(data, textStatus, jqXHR) {

@@ -58,14 +58,15 @@ class DeleteQuestionView(BrowserView):
         return True
 
     def deleteQuestionJSON(self):
-        result = self.deleteQuestion()
+        result = self.deleteQuestion() and 'success' or 'failure'
         message = "Question was deleted."
-        result = 'success'
+        questionid = self.request.get('questionid')
         if not result:
             message = "Question was not deleted."
             result = 'failure'
-        return json.dumps({result: result,
-                           message: message})
+        return json.dumps({'result': result,
+                           'message': message,
+                           'questionid': questionid})
 
 
 class AddAnswerView(BrowserView):
@@ -105,9 +106,6 @@ class AddAnswerView(BrowserView):
         return json.dumps({'result' : result,
                            'message': message,
                            'html'   : html})
-
-        return json.dumps({result: result,
-                           message: message})
     
     def allowQuestions(self):
         """ Check if the content in question (self.context) allows
