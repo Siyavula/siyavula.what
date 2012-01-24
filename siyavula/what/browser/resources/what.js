@@ -21,12 +21,12 @@ jq(document).ready(function(){
 
     jq("form#siyavula-add-answer-form").find('button').click(function(event) {
         event.preventDefault();
-        text = jq(this).parent().find('textarea').val()
+        text = jq(this).parent().find('textarea').val();
         if (text == "") {
             alert('You must supply an answer.');
             return;
         }
-        questionid = jq('input.questionid').val();
+        questionid = jq(this).parent().find('input.questionid').val();
         context_url = jq('input#context_url').attr('value');
         jq.ajax({
             url: context_url + "/@@add-answer-json",
@@ -53,6 +53,25 @@ jq(document).ready(function(){
                 'questionid': questionid,
             },
             success: removeQuestion,
+            error: displayError,
+            dataType: "json",
+        });
+    });
+
+    jq("form[name='delete-answer']")
+        .find("input[name='action.button']").click(function(event) {
+
+        event.preventDefault();
+        questionid = jq(this).parent().find('input[name="questionid"]').val();
+        answerid = jq(this).parent().find('input[name="answerid"]').val();
+        context_url = jq('input#context_url').attr('value');
+        jq.ajax({
+            url: context_url + "/@@delete-answer-json",
+            data: {
+                'questionid': questionid,
+                'answerid': answerid,
+            },
+            success: removeAnswer,
             error: displayError,
             dataType: "json",
         });
@@ -89,6 +108,15 @@ function updateAnswers(data, textStatus, jqXHR) {
     element = jq(this).find('textarea');
     element.before(html);
     element.attr('value', "");
+}
+
+function removeAnswer(data, textStatus, jqXHR) {
+    var result = data.result;
+    if (result == 'failure') {
+        alert(data.message);
+        return;
+    }
+    element = jq('div#'+data.answerid).remove();
 }
 
 function displayError(jqXHR, textStatus, errorThrown) {

@@ -1,4 +1,5 @@
 <div class="commentBody answer"
+    tal:attributes="id answer/id"
     tal:define="answer nocall:context;
                 questionid context/aq_parent/id">
     <metal:render-answer define-macro="render-answer">

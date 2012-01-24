@@ -51,9 +51,10 @@
                 </form>
             </div>
         </div>
-        <div class="commentBody answer" tal:repeat="answer context/answers">
+        <div class="commentBody answer" tal:repeat="answer context/answers"
+                tal:attributes="id answer/id">
             <span tal:content="answer/text|nothing">Answer text</span>
-            <div class="commentActions">
+            <div class="commentActions" id="answerid">
                 <form style="display: inline;" method="post"
                     action="@@delete-answer" name="delete-answer"
                     tal:attributes="action string:${context/absolute_url}">

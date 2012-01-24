@@ -161,14 +161,15 @@ class DeleteAnswerView(BrowserView):
         return True
 
     def deleteAnswerJSON(self):
-        result = self.deleteAnswer()
+        result = self.deleteAnswer() and 'success' or 'failure'
         message = "Answer was deleted."
-        result = 'success'
+        answerid = self.request.form.get('answerid')
         if not result:
             message = "Answer was not deleted."
             result = 'failure'
-        return json.dumps({result: result,
-                           message: message})
+        return json.dumps({'result': result,
+                           'message': message,
+                           'answerid': answerid})
 
 
 class AnsweredMessageView(BrowserView):
