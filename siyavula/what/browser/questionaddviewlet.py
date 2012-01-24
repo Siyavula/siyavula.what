@@ -1,4 +1,5 @@
 from plone.app.layout.viewlets.common import ViewletBase
+from plone.uuid.interfaces import IUUID
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from emas.theme import MessageFactory as _
@@ -31,3 +32,9 @@ class QuestionAddViewlet(ViewletBase):
         """
         allow = getattr(self.context, 'allowQuestions', False)
         return allow
+
+    def getUUID(self):
+        """ Return a uuid for the current context.
+        """
+        uuid = IUUID(self.context)
+        return uuid

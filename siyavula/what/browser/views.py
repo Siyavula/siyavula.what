@@ -36,9 +36,12 @@ class AddQuestionView(BrowserView):
     def addQuestionJSON(self):
         question = self.addQuestion() 
         message = "Question %s was added" %question.text
+        view = question.restrictedTraverse('@@render-question')
+        html = view()
         result = 'success'
-        return json.dumps({result: result,
-                           message: message})
+        return json.dumps({'result' : result,
+                           'message': message,
+                           'html'   : html})
 
 
 class DeleteQuestionView(BrowserView):
@@ -99,6 +102,43 @@ class AddAnswerView(BrowserView):
         result = 'success'
         return json.dumps({result: result,
                            message: message})
+    
+    def allowQuestions(self):
+        """ Check if the content in question (self.context) allows
+            questions.
+        """
+        allow = getattr(self.context, 'allowQuestions', False)
+        return allow
+
+    def author(self, question):
+        return question.Creator()
+
+    def author_image(self, question):
+        username = question.Creator()
+        if username is None:
+            # return the default user image if no username is given
+            return 'defaultUser.gif'
+        else:
+            pmt = getToolByName(self.context, 'portal_membership')
+            return pmt.getPersonalPortrait(username).absolute_url()
+        
+    def get_author_home_url(self, question):
+        username = question.Creator()
+        if username is None:
+            return None
+        else:
+            return "%s/author/%s" % (self.context.portal_url(), username)
+
+    def can_delete(self, question):
+        pmt = getToolByName(self.context, 'portal_membership')
+        return pmt.checkPermission('Delete objects', question) and True or False
+
+    def can_delete_answer(self, answer):
+        pmt = getToolByName(self.context, 'portal_membership')
+        portal_properties = getToolByName(self.context, 'portal_properties')
+        encoding = portal_properties.get('default_charset', 'utf-8')
+        member = pmt.getAuthenticatedMember().getId().encode(encoding)
+        return answer.Creator() == member and True or False
 
 
 class DeleteAnswerView(BrowserView):

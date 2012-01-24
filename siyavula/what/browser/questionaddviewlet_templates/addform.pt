@@ -9,6 +9,10 @@
             <input type="hidden" id="siyavula.what.questionadd.form.submitted"
                 name="siyavula.what.questionadd.form.submitted" value="submitted" />
             <input type="hidden" value="add-question" name="action">
+            <input type="hidden" value="content_uuid" name="content_uuid"
+                tal:attributes="value view/getUUID">
+            <input type="hidden" value="context_url" name="context_url" id="context_url"
+                tal:attributes="value context/absolute_url">
 
             <div id="question-container" class="field">
                 <label class="horizontal" for="form-widgets-text">
@@ -23,8 +27,9 @@
             </div>
 
             <div class="formControls">
-                <input type="submit" value="Submit" class="submit-widget button-field context"
-                    name="button.submit" id="button.submit">
+                <input type="submit" value="Submit" 
+                    class="submit-widget button-field context allowMultiSubmit"
+                    name="button.submit" id="siyavula-what-question-add-button">
             </div>
         </form>
     </fieldset>

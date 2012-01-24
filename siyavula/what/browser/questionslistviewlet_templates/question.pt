@@ -1,0 +1,94 @@
+<div class="discussion showCommenterImage" 
+     tal:define="author python:view.author(context);
+                 author_image python:view.author_image(context);
+                 author_home_url python:view.get_author_home_url(context);
+                 question_date context/created;
+                 questionid context/getId;
+                 can_delete python:view.can_delete(context);
+                 action context/absolute_url">
+
+    <div id="question_id" class="comment state-published">
+        <div class="commentImage" tal:condition="author_image">
+            <a href="" tal:condition="author_image"
+                       tal:attributes="href author_home_url">
+                 <img src="defaultUser.gif"
+                      alt=""
+                      border="0"
+                      height="32"
+                      tal:attributes="src author_image;
+                                      alt author" />
+            </a>
+            <img src="defaultUser.gif"
+                 alt=""
+                 border="0"
+                 height="32"
+                 tal:condition="not: author_home_url"
+                 tal:attributes="src author_image;
+                                 alt author" />
+        </div>
+
+        <div class="documentByLine">
+            <a href="#" tal:attributes="href author_home_url">admin</a>
+            asked:
+            <div class="commentDate" tal:content="question_date">Jan 19, 2012 01:50 PM</div>
+        </div>
+
+        <div class="commentBody">
+            <p tal:content="context/text">comment 1</p>
+            <div class="commentActions">
+                <form style="display: inline;" method="post"
+                    action="@@delete-question" name="delete-question"
+                    tal:attributes="action action">
+                    <input type="hidden" id="siyavula.what.questionslist.form.submitted"
+                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                    <input type="hidden" value="" name="questionid"
+                        tal:attributes="value questionid">
+                    <input type="hidden" value="delete-question" name="action">
+                    <input tal:condition="can_delete"
+                        type="submit" value="Delete" class="destructive allowMultiSubmit"
+                        name="action.button">
+                </form>
+            </div>
+        </div>
+        <div class="commentBody answer" tal:repeat="answer context/answers">
+            <span tal:content="answer/text|nothing">Answer text</span>
+            <div class="commentActions">
+                <form style="display: inline;" method="post"
+                    action="@@delete-answer" name="delete-answer"
+                    tal:attributes="action string:${context/absolute_url}">
+                    <input type="hidden" id="siyavula.what.questionslist.form.submitted"
+                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                    <input type="hidden" value="" name="questionid"
+                        tal:attributes="value questionid">
+                    <input type="hidden" value="" name="answerid"
+                        tal:attributes="value answer/getId">
+                    <input type="hidden" value="delete-answer" name="action">
+                    <input tal:condition="python:view.can_delete_answer(answer)"
+                        type="submit" value="Delete" class="destructive allowMultiSubmit"
+                        name="action.button">
+                </form>
+            </div>
+        </div>
+        
+        <div id="answer-container">
+            <div id="answer-form">
+                <form id="form.answer" name="form.answer" action="." method="POST"
+                    tal:attributes="action action">
+                    <input type="hidden" 
+                        id="siyavula.what.questionslist.form.submitted"
+                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                    <input type="hidden" id="questionid" name="questionid" value=""
+                        tal:attributes="value questionid">
+                    <input type="hidden" value="add-answer" name="action">
+                    <textarea id="answer" name="answer" 
+                        class="textarea-widget required text-field autoresize"></textarea>
+                    <button class="context hide allowMultiSubmit submitting" id="button.add.answer"
+                        style="display: inline;">
+                        Answer 
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

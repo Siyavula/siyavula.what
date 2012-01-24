@@ -20,10 +20,18 @@ class QuestionsListViewlet(ViewletBase):
             if not action: return
            
             # action can be 'add-answer' or 'delete-answer'
-            viewname = '@@%s' %action
+            portal_props = getToolByName(self.context, 'portal_properties')
+            site_props = portal_props.get('site_properties')
+            encoding = site_props.getProperty('default_charset', 'urt-8')
+            viewname = ('@@%s' %action).encode(encoding)
             view = self.context.restrictedTraverse(viewname)
             view()
-            self.request.response.redirect(self.context.absolute_url())
+            url = self.context.absolute_url()
+            relatedContent = self.context.relatedContent.to_object
+            if relatedContent:
+                url = relatedContent.absolute_url()
+            self.request.response.redirect(url)
+            return
 
     def render(self):
         """ We render an empty string when a specific piece of content
@@ -40,7 +48,7 @@ class QuestionsListViewlet(ViewletBase):
         """
         allow = getattr(self.context, 'allowQuestions', False)
         return allow
-    
+
     def questions(self):
         """ Return all questions that have the current context set
             as 'relatedContent'.
@@ -55,33 +63,3 @@ class QuestionsListViewlet(ViewletBase):
         brains = pc(query)
         return brains and [b.getObject() for b in brains] or []
 
-    def author(self, question):
-        return question.Creator()
-
-    def author_image(self, question):
-        username = question.Creator()
-        if username is None:
-            # return the default user image if no username is given
-            return 'defaultUser.gif'
-        else:
-            pmt = getToolByName(self.context, 'portal_membership')
-            return pmt.getPersonalPortrait(username).absolute_url()
-
-        
-    def get_author_home_url(self, question):
-        username = question.Creator()
-        if username is None:
-            return None
-        else:
-            return "%s/author/%s" % (self.context.portal_url(), username)
-
-    def can_delete(self, question):
-        pmt = getToolByName(self.context, 'portal_membership')
-        return pmt.checkPermission('Delete objects', question) and True or False
-
-    def can_delete_answer(self, answer):
-        pmt = getToolByName(self.context, 'portal_membership')
-        portal_properties = getToolByName(self.context, 'portal_properties')
-        encoding = portal_properties.get('default_charset', 'utf-8')
-        member = pmt.getAuthenticatedMember().getId().encode(encoding)
-        return answer.Creator() == member and True or False

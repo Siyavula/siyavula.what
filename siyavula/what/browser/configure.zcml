@@ -99,4 +99,12 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="siyavula.what.question.IQuestion"
+        name="render-question"
+        class=".views.AddAnswerView"
+        template="questionslistviewlet_templates/question.pt"
+        permission="zope2.View"
+        />
+
 </configure>
