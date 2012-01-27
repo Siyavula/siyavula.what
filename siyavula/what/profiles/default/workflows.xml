@@ -3,6 +3,7 @@
  <property
     name="title">Contains workflow definitions for Siyavula.what</property>
  <object name="question_workflow" meta_type="Workflow"/>
+ <object name="questioncontainer_workflow" meta_type="Workflow"/>
  <bindings>
   <type type_id="siyavula.what.question">
    <bound-workflow workflow_id="question_workflow"/>
@@ -10,7 +11,7 @@
  </bindings>
  <bindings>
   <type type_id="siyavula.what.questioncontainer">
-   <bound-workflow workflow_id="simple_publication_workflow"/>
+   <bound-workflow workflow_id="questioncontainer_workflow"/>
   </type>
  </bindings>
 </object>
