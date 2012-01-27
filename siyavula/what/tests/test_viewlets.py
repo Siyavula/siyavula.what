@@ -2,7 +2,6 @@ import os
 
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView as View
-from plone.app.testing import login, logout
 
 from base import SiyavulaWhatTestBase
 
@@ -96,8 +95,8 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
         acl_users = getToolByName(self.portal, 'acl_users')
         acl_users.userFolderAddUser('user1', 'secret', ['Member'], [])        
 
-    def _get_list_viewlet(self): 
-        context = self.portal.questions
+    def _get_list_viewlet(self, context=None): 
+        context = context or self.portal.questions
         manager_name = 'plone.belowcontent'
         viewlet_name = 'questions-list'
         layer = ISiyavulaWhatLayer
@@ -117,7 +116,7 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
     
     def test_create_answer_without_text(self):
         question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
+        viewlet = self._get_list_viewlet(question)
 
         request = self.portal.REQUEST
         request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
@@ -129,7 +128,7 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
     def test_create_answer_with_text(self):
         question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
+        viewlet = self._get_list_viewlet(question)
 
         request = self.portal.REQUEST
         request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'
@@ -152,7 +151,7 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
     def test_create_answer_wrong_submit_data(self):
         question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
+        viewlet = self._get_list_viewlet(question)
 
         request = self.portal.REQUEST
         request.form['form.submitted'] = 'submitted'
@@ -207,79 +206,6 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
         self.assertTrue(
             len(self.portal.questions.objectIds()) > 0,
             'Question should not have been deleted.'
-        )
-
-    def test_author(self):
-        question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
-        self.assertEqual(
-            viewlet.author(question), question.Creator(),
-            'Author incorrect.'
-        )
-
-    def test_author_image(self):
-        question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
-        pmt = self.portal.portal_membership
-        image = pmt.getPersonalPortrait(question.Creator()).absolute_url()
-        self.assertEqual(
-            viewlet.author_image(question), image,
-            'Image incorrect.'
-        )
-    
-    def test_get_author_home_url(self):
-        question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
-        home_url = "%s/author/%s" % (self.portal.portal_url(), question.Creator())
-        self.assertEqual(
-            viewlet.get_author_home_url(question), home_url,
-            'Home URL incorrect.'
-        )
-    
-    def test_can_delete_question_as_creator(self):
-        question = self._createQuestion()
-        viewlet = self._get_viewlet()
-
-        can_delete = viewlet.can_delete(question)
-        self.assertEqual(
-            can_delete, True,
-            'Creator cannot delete question.'
-        )
-
-    def test_can_delete_question_as_member(self):
-        question = self._createQuestion()
-        logout()
-        login(self.portal, 'user1')
-        viewlet = self._get_viewlet()
-
-        can_delete = viewlet.can_delete(question)
-        self.assertEqual(
-            can_delete, False,
-            'Only creator and admin may delete questions.'
-        )
-
-    def test_can_delete_answer_as_creator(self):
-        question = self._createQuestion()
-        answer = self._createAnswer(question)
-        viewlet = self._get_viewlet()
-
-        can_delete = viewlet.can_delete_answer(answer)
-        self.assertEqual(
-            can_delete, True,
-            'Creator cannot answer.'
-        )
-
-    def test_can_delete_answer_as_member(self):
-        question = self._createQuestion()
-        answer = self._createAnswer(question)
-        logout()
-        login(self.portal, 'user1')
-        viewlet = self._get_viewlet()
-
-        can_delete = viewlet.can_delete_answer(answer)
-        self.assertEqual(
-            can_delete, False,
-            'Only creator and admin may delete answers.'
         )
 
     def _get_viewlet(self):
