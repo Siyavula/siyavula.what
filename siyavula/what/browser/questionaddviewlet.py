@@ -2,7 +2,7 @@ from plone.app.layout.viewlets.common import ViewletBase
 from plone.uuid.interfaces import IUUID
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from emas.theme import MessageFactory as _
+from siyavula.what import MessageFactory as _
 
 class QuestionAddViewlet(ViewletBase):
     """ Display a form to add a new question.

@@ -4,7 +4,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.uuid.interfaces import IUUID
 from plone.app.layout.viewlets.common import ViewletBase
 
-from emas.theme import MessageFactory as _
+from siyavula.what import MessageFactory as _
 
 class QuestionsListViewlet(ViewletBase):
     """ Display the list of questions for a given context.
