@@ -10,5 +10,10 @@ Changelog
 -----------------
     
 - Added eventhandler to notify question creator of answers.
+
 - Questions now start their workflow life as 'submitted'.
     - run at least the workflowtool profile steps and do a security update.
+
+- Added autopermissions dependency and rolemap.xml to enable correct
+  permissions on 'Question' and 'Answer' objects.
+  Rebuild the instance and then reinstall to get the functionality working.

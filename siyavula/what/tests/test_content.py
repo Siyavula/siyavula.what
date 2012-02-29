@@ -58,7 +58,7 @@ class TestQuestionContainer(SiyavulaWhatTestBase):
         wft = getToolByName(self.portal, 'portal_workflow')
         self.assertEqual(
             wft.getChainFor(container),
-            ('simple_publication_workflow',),
+            ('questioncontainer_workflow',),
             'Question container workflow is incorrect'
         )
 

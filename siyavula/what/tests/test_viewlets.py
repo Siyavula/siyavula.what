@@ -181,7 +181,7 @@ class TestQuestionsListViewlet(SiyavulaWhatTestBase):
 
     def test_delete_question(self):
         question = self._createQuestion()
-        viewlet = self._get_list_viewlet()
+        viewlet = self._get_list_viewlet(question)
 
         request = self.portal.REQUEST
         request.form['siyavula.what.questionslist.form.submitted'] = 'submitted'

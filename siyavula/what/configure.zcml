@@ -15,6 +15,10 @@
 
   <include package=".browser" />
   <include package=".extenders" />
+
+  <include package="collective.autopermission" />
+  <permission id="siyavula.what.AddQuestion" title="Siyavula What: Add Question" />
+  <permission id="siyavula.what.AddAnswer" title="Siyavula What: Add Answer" />
   
   <i18n:registerTranslations directory="locales" />
 

@@ -4,8 +4,25 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <permission>List folder contents</permission>
+ <permission>Add portal content</permission>
+
  <state state_id="private" title="">
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>Authenticated</permission-role>
+  </permission-map>
+  <permission-map name="Add portal content" acquired="True">
+   <permission-role>Authenticated</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="True">
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>Authenticated</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>Authenticated</permission-role>
+  </permission-map>
  </state>
+
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>

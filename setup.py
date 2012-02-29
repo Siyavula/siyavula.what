@@ -28,6 +28,7 @@ setup(name='siyavula.what',
           'setuptools',
           'plone.app.dexterity',
           'plone.namedfile [blobs]',
+          'collective.autopermission',
           # -*- Extra requirements: -*-
       ],
       extras_require={
