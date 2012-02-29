@@ -29,7 +29,9 @@
         </div>
 
         <div class="documentByLine">
-            <a href="#" tal:attributes="href author_home_url">admin</a>
+            <a href="#" tal:attributes="href author_home_url">
+                <span tal:replace="author">user name</span>
+            </a>
             asked:
             <div class="commentDate" tal:content="question_date">Jan 19, 2012 01:50 PM</div>
         </div>
