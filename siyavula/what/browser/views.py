@@ -34,6 +34,7 @@ class AddQuestionView(BrowserView):
         return question
 
     def addQuestionJSON(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
         question = self.addQuestion() 
         message = "Question %s was added" %question.text
         view = question.restrictedTraverse('@@render-question')
@@ -58,6 +59,7 @@ class DeleteQuestionView(BrowserView):
         return True
 
     def deleteQuestionJSON(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
         result = self.deleteQuestion() and 'success' or 'failure'
         message = "Question was deleted."
         questionid = self.request.get('questionid')
@@ -98,6 +100,7 @@ class AddAnswerView(BrowserView):
         return answer
 
     def addAnswerJSON(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
         answer = self.addAnswer() 
         message = "Answer %s was added" %answer.text
         result = 'success'
@@ -161,6 +164,7 @@ class DeleteAnswerView(BrowserView):
         return True
 
     def deleteAnswerJSON(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
         result = self.deleteAnswer() and 'success' or 'failure'
         message = "Answer was deleted."
         answerid = self.request.form.get('answerid')
