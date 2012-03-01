@@ -120,7 +120,7 @@ function removeAnswer(data, textStatus, jqXHR) {
 }
 
 function displayError(jqXHR, textStatus, errorThrown) {
-    alert(textStatus);
+    alert(errorThrown);
     spinner = jq('img#spinner');
     jq(spinner).hide();
 }
