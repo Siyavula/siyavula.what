@@ -77,7 +77,8 @@ class AddAnswerView(BrowserView):
     """
     def can_show(self):
         permission = 'siyavula.what.AddAnswer'
-        return checkPermission(permission, self.context)
+        pmt = getToolByName(self.context, 'portal_membership')
+        return pmt.checkPermission(permission, self.context) and True or False
 
     def addAnswer(self):
         request = self.request
