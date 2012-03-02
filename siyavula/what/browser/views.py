@@ -1,4 +1,5 @@
 import json
+from zope.security import checkPermission
 from zExceptions import NotFound
 from z3c.relationfield.relation import create_relation
 
@@ -74,6 +75,10 @@ class DeleteQuestionView(BrowserView):
 class AddAnswerView(BrowserView):
     """ Add an answer for a given the question.
     """
+    def can_show(self):
+        permission = 'siyavula.what.AddAnswer'
+        return checkPermission(permission, self.context)
+
     def addAnswer(self):
         request = self.request
         context = self.context

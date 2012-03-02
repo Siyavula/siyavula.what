@@ -74,7 +74,8 @@
             </div>
         </div>
         
-        <div id="answer-container">
+        <div id="answer-container"
+            tal:condition="view/can_show">
             <div id="answer-form">
                 <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
                     tal:attributes="action action">
