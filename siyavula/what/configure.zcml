@@ -26,9 +26,9 @@
        in Plone -->
   <genericsetup:registerProfile
       name="default"
-      title="Siyavula What? Questions and Answers on Plone content."
+      title="siyavula.what"
       directory="profiles/default"
-      description="Extension profile for Siyavula What? Questions and Answers on Plone content."
+      description="Extension profile for Siyavula What Questions and Answers on Plone content."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
