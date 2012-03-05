@@ -2,7 +2,8 @@
      tal:define="author python:view.author(context);
                  author_image python:view.author_image(context);
                  author_home_url python:view.get_author_home_url(context);
-                 question_date context/created;
+                 plone_view context/@@plone;
+                 question_date python:plone_view.toLocalizedTime(context.created(), long_format=True);
                  questionid context/getId;
                  can_delete python:view.can_delete(context);
                  action context/absolute_url">
