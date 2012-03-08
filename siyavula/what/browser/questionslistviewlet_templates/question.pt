@@ -8,7 +8,7 @@
                  can_delete python:view.can_delete(context);
                  action context/absolute_url">
 
-    <div id="question_id" class="comment state-published"
+    <div id="question_id" class="comment"
         tal:attributes="id questionid"> 
         <div class="commentImage" tal:condition="author_image">
             <a href="" tal:condition="author_image"
