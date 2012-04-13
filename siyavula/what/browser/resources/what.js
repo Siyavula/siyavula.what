@@ -81,16 +81,12 @@ jq(document).ready(function(){
 function updateQuestions(data, textStatus, jqXHR) {
     var result = data.result;
     var html = data.html;
-    credits = data.credits;
     if (result == 'failure') {
         alert(data.message);
         return;
     }
     jq('div#what-container').append(html);
     jq("textarea#question").attr('value', "");
-    if (credits < 1) {
-        jq('div#commenting').remove();
-    }
 }
 
 function removeQuestion(data, textStatus, jqXHR) {
