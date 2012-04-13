@@ -76,7 +76,7 @@ class AddAnswerView(BrowserView):
     """ Add an answer for a given the question.
     """
     def can_show(self):
-        permission = 'siyavula.what.AddAnswer'
+        permission = 'Siyavula What: Add Answer'
         pmt = getToolByName(self.context, 'portal_membership')
         return pmt.checkPermission(permission, self.context) and True or False
 
