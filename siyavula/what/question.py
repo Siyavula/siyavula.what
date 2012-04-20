@@ -60,4 +60,5 @@ class Question(dexterity.Container):
 
     @property
     def answers(self):
-        return self.objectValues()
+        obs = self.objectValues()
+        return [ob for ob in obs if ob.portal_type == 'siyavula.what.answer']
