@@ -22,3 +22,13 @@ Revision hash: 35308cf6e18586269463a905ba8b18f4709d973e
 
 - add Image as an allowed type to Question
     - Rerun profile to enable.
+
+Revision hash: 0d812411ab8113f0b069bcfd290b8abb61490ebc
+
+- Short term fix to render html structure unescaped in answers.
+
+Revision hash: 1d4abc5bd2f28a71538615e656de86e877506249
+
+- Answer RichTextField
+- Question.answers constrained to 'siyavula.what.answer' types.
+- git pull and restart server.
