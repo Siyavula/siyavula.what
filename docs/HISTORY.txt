@@ -17,3 +17,8 @@ Changelog
 - Added autopermissions dependency and rolemap.xml to enable correct
   permissions on 'Question' and 'Answer' objects.
   Rebuild the instance and then reinstall to get the functionality working.
+
+Revision hash: 35308cf6e18586269463a905ba8b18f4709d973e
+
+- add Image as an allowed type to Question
+    - Rerun profile to enable.
