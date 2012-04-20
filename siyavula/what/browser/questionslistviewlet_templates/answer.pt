@@ -4,7 +4,7 @@
     tal:define="answer nocall:context;
                 questionid context/aq_parent/id">
     <metal:render-answer define-macro="render-answer">
-    <span tal:content="answer/text|nothing">Answer text</span>
+    <span tal:content="structure answer/text|nothing">Answer text</span>
     <div class="commentActions">
         <form style="display: inline;" method="post"
             action="@@delete-answer" name="delete-answer"
