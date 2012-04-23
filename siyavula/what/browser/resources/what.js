@@ -19,25 +19,28 @@ jq(document).ready(function(){
         });
     });
 
-    jq("form#siyavula-add-answer-form").find('button').click(function(event) {
+    jq("button.siyavula-add-answer-button").click(function(event) {
         event.preventDefault();
-        text = jq(this).parent().find('textarea').val();
-        if (text == "") {
+        var answerid = jq(this).attr('answerid');
+        var editor = jq('iframe#' + answerid + '-add-answer-area_ifr');
+        var contents = jq(editor).contents().find('body').html();
+        if (contents == "<p><br mce_bogus=\"1\"></p>" || contents == '') {
             alert('You must supply an answer.');
             return;
         }
-        questionid = jq(this).parent().find('input.questionid').val();
+        var answerform = jq(this).parent().parent();
+        var questionid = jq(answerform).find('input.questionid').val();
         context_url = jq('input#context_url').attr('value');
         jq.ajax({
             url: context_url + "/@@add-answer-json",
             data: {
-                'answer': text,
+                'answer': contents,
                 'questionid': questionid,
             },
             success: updateAnswers,
             error: displayError,
             dataType: "json",
-            context: jq(this).parent(),
+            context: answerform,
         });
     });
     
@@ -105,9 +108,10 @@ function updateAnswers(data, textStatus, jqXHR) {
         alert(data.message);
         return;
     }
-    element = jq(this).find('textarea');
-    element.before(html);
-    element.attr('value', "");
+    questionid = jq(this).find('.questionid').attr('value');
+    element = jq(document).find('div#' + questionid + '-answers-list');
+    element.append(html);
+    jq(this).find('iframe').contents().find('body').html('');
 }
 
 function removeAnswer(data, textStatus, jqXHR) {

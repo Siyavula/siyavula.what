@@ -54,26 +54,30 @@
                 </form>
             </div>
         </div>
-        <div tal:condition="nocall:context/answers"><label>Answer:</label></div>
-        <div class="commentBody answer" tal:repeat="answer context/answers"
-                tal:attributes="id answer/id">
-            <span tal:content="structure answer/text/output|nothing">Answer text</span>
-            <div class="commentActions" id="answerid">
-                <form style="display: inline;" method="post"
-                    action="@@delete-answer" name="delete-answer"
-                    tal:attributes="action string:${context/absolute_url}">
-                    <input type="hidden" id="siyavula.what.questionslist.form.submitted"
-                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
-                    <input type="hidden" value="" name="questionid"
-                        tal:attributes="value questionid">
-                    <input type="hidden" value="" name="answerid"
-                        tal:attributes="value answer/getId">
-                    <input type="hidden" value="delete-answer" name="action">
-                    <input tal:condition="python:view.can_delete_answer(answer)"
-                        type="submit" value="Delete" class="destructive allowMultiSubmit"
-                        name="action.button">
-                </form>
+        <div id="answers-list" tal:attributes="id string:${questionid}-answers-list"
+            tal:condition="nocall:context/answers"><label>Answer:</label>
+
+            <div class="commentBody answer" tal:repeat="answer context/answers"
+                    tal:attributes="id answer/id">
+                <span tal:content="structure answer/text/output|nothing">Answer text</span>
+                <div class="commentActions" id="answerid">
+                    <form style="display: inline;" method="post"
+                        action="@@delete-answer" name="delete-answer"
+                        tal:attributes="action string:${context/absolute_url}">
+                        <input type="hidden" id="siyavula.what.questionslist.form.submitted"
+                            name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                        <input type="hidden" value="" name="questionid"
+                            tal:attributes="value questionid">
+                        <input type="hidden" value="" name="answerid"
+                            tal:attributes="value answer/getId">
+                        <input type="hidden" value="delete-answer" name="action">
+                        <input tal:condition="python:view.can_delete_answer(answer)"
+                            type="submit" value="Delete" class="destructive allowMultiSubmit"
+                            name="action.button">
+                    </form>
+                </div>
             </div>
+
         </div>
         
         <div id="answer-container"
@@ -102,9 +106,9 @@
                         </tal:define>
                     </div>
                     <div id="answer-action-buttons-container">
-                        <button class="context hide allowMultiSubmit submitting"
-                                id="siyavula-add-answer-button"
-                                tal:attributes="id string:${context/id}-add-answer-button"
+                        <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
+                                tal:attributes="id string:add-answer-button:${context/id};
+                                                answerid string:${context/id}"
                                 style="display: inline;">
                                 Answer 
                         </button>

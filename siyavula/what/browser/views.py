@@ -7,6 +7,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.Five import BrowserView
 from siyavula.what import MessageFactory as _
+from siyavula.what.answer import IAnswer
 
 
 class AddQuestionView(BrowserView):
@@ -99,16 +100,15 @@ class AddAnswerView(BrowserView):
         new_id = question.generateId('answer')
 
         question.invokeFactory('siyavula.what.answer',
-                                id=new_id,
-                                text=answer_text)
-        
+                                id=new_id)
         answer = question._getOb(new_id)
+        answer.text = IAnswer['text'].fromUnicode(answer_text)
         return answer
 
     def addAnswerJSON(self):
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         answer = self.addAnswer() 
-        message = "Answer %s was added" %answer.text
+        message = "An answer was added."
         result = 'success'
         view = answer.restrictedTraverse('@@render-answer')
         html = view()
