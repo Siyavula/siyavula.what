@@ -57,7 +57,7 @@
         <div tal:condition="nocall:context/answers"><label>Answer:</label></div>
         <div class="commentBody answer" tal:repeat="answer context/answers"
                 tal:attributes="id answer/id">
-            <span tal:content="structure answer/text|nothing">Answer text</span>
+            <span tal:content="structure answer/text/output|nothing">Answer text</span>
             <div class="commentActions" id="answerid">
                 <form style="display: inline;" method="post"
                     action="@@delete-answer" name="delete-answer"
@@ -78,7 +78,7 @@
         
         <div id="answer-container"
             tal:condition="view/can_show">
-            <div id="answer-form">
+            <div id="answer-form" class="commentBody">
                 <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
                     tal:attributes="action action">
                     <input type="hidden" 
@@ -87,15 +87,28 @@
                     <input type="hidden" class="questionid" name="questionid" value=""
                         tal:attributes="value questionid">
                     <input type="hidden" value="add-answer" name="action">
-                    <textarea id="answer" name="answer" 
-                        tal:attributes="id string:${context/id}-add-answer-area"
-                        class="textarea-widget required text-field autoresize"></textarea>
-                    <button class="context hide allowMultiSubmit submitting"
-                        id="siyavula-add-answer-button"
-                        tal:attributes="id string:${context/id}-add-answer-button"
-                        style="display: inline;">
-                        Answer 
-                    </button>
+                    
+                    <div class="textarea-widget required text-field autoresize">
+                        <tal:define
+                            define="value string:;
+                                    content string:;
+                                    fieldName string:${context/id}-add-answer-area;
+                                    inputname fieldName;
+                                    inputvalue content;
+                                    rows python:5;
+                                    cols python:100;
+                                    ">
+                        <div metal:use-macro="context/wysiwyg_support/macros/wysiwygEditorBox"/>
+                        </tal:define>
+                    </div>
+                    <div id="answer-action-buttons-container">
+                        <button class="context hide allowMultiSubmit submitting"
+                                id="siyavula-add-answer-button"
+                                tal:attributes="id string:${context/id}-add-answer-button"
+                                style="display: inline;">
+                                Answer 
+                        </button>
+                    </div>
                 </form>
             </div>
 

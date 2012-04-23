@@ -175,3 +175,12 @@
     font-weight:bold;
 }
 
+div#answer-container div.suppressVisualEditor {
+    display: none;
+}
+
+div#what-container div#answer-action-buttons-container {
+    float: right;
+    margin-top: -44px;
+}
+
