@@ -187,3 +187,11 @@ div#what-container div#answer-action-buttons-container {
 div#answer-action-buttons-container button#siyavula-add-answer-button {
     display: inline;
 }
+
+form#siyavula-add-answer-form td.mceIframeContainer {
+    border: 1px solid #CCCCCC;
+}
+
+form#siyavula-add-answer-form div.textarea-widget td.mceStatusbar {
+    border: 1px solid #CCCCCC;
+}
