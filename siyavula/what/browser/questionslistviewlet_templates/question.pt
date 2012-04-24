@@ -54,9 +54,9 @@
                 </form>
             </div>
         </div>
-        <div id="answers-list" tal:attributes="id string:${questionid}-answers-list"
-            tal:condition="nocall:context/answers"><label>Answer:</label>
-
+        <div id="answers-list" tal:attributes="id string:${questionid}-answers-list">
+            
+            <label>Answer:</label>
             <div class="commentBody answer" tal:repeat="answer context/answers"
                     tal:attributes="id answer/id">
                 <span tal:content="structure answer/text/output|nothing">Answer text</span>
