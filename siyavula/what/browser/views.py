@@ -1,4 +1,6 @@
 import json
+import logging
+
 from zope.security import checkPermission
 from zExceptions import NotFound
 from z3c.relationfield.relation import create_relation
@@ -8,6 +10,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from siyavula.what import MessageFactory as _
 from siyavula.what.answer import IAnswer
+from siyavula.what.utils import get_basic_mailsettings 
+
+LOGGER = logging.getLogger('siyavula.what: views')
 
 
 class AddQuestionView(BrowserView):
@@ -186,3 +191,27 @@ class AnsweredMessageView(BrowserView):
     
     def related_content(self):
         return self.context.relatedContent.to_object
+
+
+class AnnotatorNotify(BrowserView):
+    """ Send email notification to owner and every user that replied to a 
+        specific annotation when a new reply is posted or deleted
+    """
+
+    def notifyJSON(self):
+        import pdb; pdb.set_trace()
+        # get the basic mail settings and details
+        errors, mail_host, mail_from, mail_to = get_basic_mailsettings(self.context)
+        if errors:
+            for error in errors:
+                LOGGER.warn(error)
+            return errors
+
+        # Compose email
+        subject = _(u"Your question was answered.")
+        message = "Annotator mail test"
+        # Send email
+        mail_host.secureSend(message, mail_to, mail_from, subject=subject)
+        result = 'success'
+        return json.dumps({'result' : result})
+
