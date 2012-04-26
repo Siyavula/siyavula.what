@@ -36,6 +36,14 @@
 
     <browser:page
         for="*"
+        name="annotator-notify-json"
+        class=".views.AnnotatorNotify"
+        attribute="notifyJSON"
+        permission="zope2.View"
+        />
+    
+    <browser:page
+        for="*"
         name="delete-question"
         class=".views.DeleteQuestionView"
         permission="zope2.View"

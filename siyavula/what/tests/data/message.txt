@@ -6,14 +6,16 @@ To: tester@example.com
 From: admin@example.com
 Subject: Your question was answered.
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <body>
 
-        <h2 class="toc">There is an answer.</h2>
-        <p>Your question was answered.</p>
-        <p>To see the answer go to:</p>
-        <p><a href="http://nohost/plone/questions">test question 01</a>
-        </p>
+On Apr 25, 2012 you asked the question below on the page titled "Questions":
 
-    </body>
-</html>
+    test question 01
+
+The answer to your question is:
+
+
+You can also see the answer to your question by following the link below:
+
+        http://nohost/plone/questions
+
+
