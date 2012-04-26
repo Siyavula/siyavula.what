@@ -107,6 +107,7 @@ class AddAnswerView(BrowserView):
         question.invokeFactory('siyavula.what.answer',
                                 id=new_id)
         answer = question._getOb(new_id)
+        # refer to: plone.app.textfield.tests for more info/examples  
         answer.text = IAnswer['text'].fromUnicode(answer_text)
         return answer
 

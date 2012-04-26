@@ -1,0 +1,42 @@
+""" Run this script to migrate answer.text to richtext field.
+"""
+import sys
+import transaction
+from Testing import makerequest
+from AccessControl.SecurityManagement import newSecurityManager
+from Products.CMFCore.utils import getToolByName
+from plone.app.textfield import IRichTextValue
+
+
+from siyavula.what.answer import IAnswer
+
+PORTAL_ID = 'emas'
+
+try:
+    portal_id = sys.argv[1]
+except IndexError:
+    portal_id = PORTAL_ID
+
+if not app.hasObject(portal_id):
+    print "Can't find a plone site with %s as id." %PORTAL_ID
+    print "Please specify the id of your plone site as the first argument "
+    print "to this script."
+    print "Usage: <instancehome>/bin/instance run %s <id>" % sys.argv[0]
+    sys.exit(1)
+
+
+portal = app[portal_id]
+app = makerequest.makerequest(app)
+user = app.acl_users.getUser('admin')
+newSecurityManager(None, user.__of__(app.acl_users))
+pc = getToolByName(portal, 'portal_catalog')
+
+for brain in pc.unrestrictedSearchResults(portal_type='siyavula.what.answer'):
+    answer = brain.getObject()
+    value = answer.text
+    # only migrate the old fields.
+    if not IRichTextValue.providedBy(value):
+        print 'Upgrading %s' % brain.getPath()
+        answer.text = IAnswer['text'].fromUnicode(answer.text)
+
+transaction.commit()
