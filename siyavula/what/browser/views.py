@@ -35,7 +35,7 @@ class AddQuestionView(BrowserView):
         questions.invokeFactory('siyavula.what.question',
                                 id=new_id,
                                 relatedContent=relation,
-                                text=question_text)
+                                text=question_text.decode('utf-8'))
         
         question = questions._getOb(new_id)
         return question
@@ -200,7 +200,6 @@ class AnnotatorNotify(BrowserView):
     """
 
     def notifyJSON(self):
-        import pdb; pdb.set_trace()
         # get the basic mail settings and details
         errors, mail_host, mail_from, mail_to = get_basic_mailsettings(self.context)
         if errors:
