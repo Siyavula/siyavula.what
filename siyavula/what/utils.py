@@ -7,7 +7,6 @@ LOGGER = logging.getLogger('siyavula.what: utils')
 
 
 def get_basic_mailsettings(context):
-    import pdb; pdb.set_trace()
     errors = []
 
     member_id = context.Creator()
