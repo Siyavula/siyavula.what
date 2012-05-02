@@ -22,13 +22,12 @@ def questionAnswered(question, event):
     if errors:
         for error in errors:
             LOGGER.warn(error)
-        return errors
+    else:
+        # Compose email
+        subject = _(u"Your question was answered.")
+        view = question.restrictedTraverse('@@answered-message')
+        message = view()
 
-    # Compose email
-    subject = _(u"Your question was answered.")
-    view = question.restrictedTraverse('@@answered-message')
-    message = view()
-
-    # Send email
-    mail_host.secureSend(message, mail_to, mail_from, subject=subject)
+        # Send email
+        mail_host.secureSend(message, mail_to, mail_from, subject=subject)
 
