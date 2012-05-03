@@ -110,7 +110,7 @@ class AddAnswerView(BrowserView):
                                 id=new_id)
         answer = question._getOb(new_id)
         # refer to: plone.app.textfield.tests for more info/examples  
-        answer.text = IAnswer['text'].fromUnicode(answer_text)
+        answer.text = IAnswer['text'].fromUnicode(answer_text.decode('utf-8'))
 
         notify(ObjectModifiedEvent(answer))
         return answer
@@ -200,6 +200,9 @@ class AnsweredMessageView(BrowserView):
     
     def related_content(self):
         return self.question.relatedContent.to_object
+
+    def get_safe_text(self, text):
+        return text.decode('utf-8') 
 
 
 class AnnotatorNotify(BrowserView):
