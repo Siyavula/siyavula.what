@@ -1,7 +1,9 @@
 import json
 import logging
 
+from zope.event import notify
 from zope.security import checkPermission
+from zope.lifecycleevent import ObjectModifiedEvent
 from zExceptions import NotFound
 from z3c.relationfield.relation import create_relation
 
@@ -109,6 +111,8 @@ class AddAnswerView(BrowserView):
         answer = question._getOb(new_id)
         # refer to: plone.app.textfield.tests for more info/examples  
         answer.text = IAnswer['text'].fromUnicode(answer_text)
+
+        notify(ObjectModifiedEvent(answer))
         return answer
 
     def addAnswerJSON(self):
@@ -189,9 +193,13 @@ class DeleteAnswerView(BrowserView):
 
 
 class AnsweredMessageView(BrowserView):
+
+    @property
+    def question(self):
+        return self.context.aq_parent
     
     def related_content(self):
-        return self.context.relatedContent.to_object
+        return self.question.relatedContent.to_object
 
 
 class AnnotatorNotify(BrowserView):
