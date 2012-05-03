@@ -43,7 +43,7 @@
 
   <!-- event handlers -->
   <subscriber
-      for="siyavula.what.question.IQuestion
+      for="siyavula.what.answer.IAnswer
            zope.lifecycleevent.IObjectModifiedEvent"
       handler=".eventhandlers.questionAnswered"
       />
