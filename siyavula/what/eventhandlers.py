@@ -8,10 +8,11 @@ from siyavula.what.utils import get_basic_mailsettings
 LOGGER = logging.getLogger('siyavula.what: eventhandlers')
 
 
-def questionAnswered(question, event):
+def questionAnswered(answer, event):
     """ Send mail when a question is answered.
     """
-    wft = getToolByName(question, 'portal_workflow')
+    wft = getToolByName(answer, 'portal_workflow')
+    question = answer.aq_parent
     review_state = wft.getInfoFor(
         question, 'review_state', 'question_workflow')
     if review_state in ['submitted', ]:
@@ -19,13 +20,14 @@ def questionAnswered(question, event):
 
     # get the basic mail settings and details
     errors, mail_host, mail_from, mail_to = get_basic_mailsettings(question)
+
     if errors:
         for error in errors:
             LOGGER.warn(error)
     else:
         # Compose email
         subject = _(u"Your question was answered.")
-        view = question.restrictedTraverse('@@answered-message')
+        view = answer.restrictedTraverse('@@answered-message')
         message = view()
 
         # Send email
