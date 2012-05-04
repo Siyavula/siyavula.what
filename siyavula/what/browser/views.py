@@ -92,10 +92,7 @@ class AddAnswerView(BrowserView):
         request = self.request
         context = self.context
 
-        answer_text = request.get('answer', '')
-        if not answer_text:
-            return
-
+        answer_text = request['answer']
         portal = context.restrictedTraverse('@@plone_portal_state').portal()
         questions = portal._getOb('questions')
 
