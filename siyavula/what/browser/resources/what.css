@@ -49,7 +49,7 @@
 }
 
 .commentBody p {
-    float: left;
+    float: none;
  }
 
 .discussion .documentByLine {
