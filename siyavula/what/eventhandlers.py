@@ -31,5 +31,6 @@ def questionAnswered(answer, event):
         message = view()
 
         # Send email
-        mail_host.secureSend(message, mail_to, mail_from, subject=subject)
+        mail_host.send(message, mail_to, mail_from, subject=subject,
+                       charset='utf-8')
 
