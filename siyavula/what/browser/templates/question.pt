@@ -43,8 +43,8 @@
                 <form style="display: inline;" method="post"
                     action="@@delete-question" name="delete-question"
                     tal:attributes="action action">
-                    <input type="hidden" id="siyavula.what.questionslist.form.submitted"
-                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                    <input type="hidden" id="siyavula.what.qaviewlet.form.submitted"
+                        name="siyavula.what.qaviewlet.form.submitted" value="submitted" />
                     <input type="hidden" value="" name="questionid"
                         tal:attributes="value questionid">
                     <input type="hidden" value="delete-question" name="action">
@@ -57,27 +57,11 @@
         <div id="answers-list" tal:attributes="id string:${questionid}-answers-list">
             
             <label>Answer:</label>
-            <div class="commentBody answer" tal:repeat="answer context/answers"
-                    tal:attributes="id answer/id">
-                <span tal:content="structure answer/text/output|nothing">Answer text</span>
-                <div class="commentActions" id="answerid">
-                    <form style="display: inline;" method="post"
-                        action="@@delete-answer" name="delete-answer"
-                        tal:attributes="action string:${context/absolute_url}">
-                        <input type="hidden" id="siyavula.what.questionslist.form.submitted"
-                            name="siyavula.what.questionslist.form.submitted" value="submitted" />
-                        <input type="hidden" value="" name="questionid"
-                            tal:attributes="value questionid">
-                        <input type="hidden" value="" name="answerid"
-                            tal:attributes="value answer/getId">
-                        <input type="hidden" value="delete-answer" name="action">
-                        <input tal:condition="python:view.can_delete_answer(answer)"
-                            type="submit" value="Delete" class="destructive allowMultiSubmit"
-                            name="action.button">
-                    </form>
-                </div>
+            <div class="commentBody answer" tal:repeat="answer python:context.getAnswers()">
+                <span tal:define="view nocall:answer/@@render-answer">
+                    <div metal:use-macro="view/index/macros/render_answer" />
+                </span>
             </div>
-
         </div>
         
         <div id="answer-container"
@@ -86,8 +70,8 @@
                 <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
                     tal:attributes="action action">
                     <input type="hidden" 
-                        id="siyavula.what.questionslist.form.submitted"
-                        name="siyavula.what.questionslist.form.submitted" value="submitted" />
+                        id="siyavula.what.qaviewlet.form.submitted"
+                        name="siyavula.what.qaviewlet.form.submitted" value="submitted" />
                     <input type="hidden" class="questionid" name="questionid" value=""
                         tal:attributes="value questionid">
                     <input type="hidden" value="add-answer" name="action">

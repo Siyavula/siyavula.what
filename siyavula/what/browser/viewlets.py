@@ -6,16 +6,16 @@ from plone.app.layout.viewlets.common import ViewletBase
 
 from siyavula.what import MessageFactory as _
 
-class QuestionsListViewlet(ViewletBase):
-    """ Display the list of questions for a given context.
+class QAViewlet(ViewletBase):
+    """ Display the list of questions and answers for a given context.
     """
-    index = ViewPageTemplateFile('questionslistviewlet_templates/questionslist.pt')
+    index = ViewPageTemplateFile('templates/qaviewlet.pt')
 
     def update(self):
-        super(QuestionsListViewlet, self).update()
+        super(QAViewlet, self).update()
 
         # if the form was not posted to this method we do nothing
-        if self.request.form.get('siyavula.what.questionslist.form.submitted'):
+        if self.request.form.get('siyavula.what.qaviewlet.form.submitted'):
             action = self.request.form.get('action', '').lower()
             if not action: return
            
@@ -38,7 +38,7 @@ class QuestionsListViewlet(ViewletBase):
             does not allow questions.
         """
         if self.allowQuestions():
-            return super(QuestionsListViewlet, self).render()
+            return super(QAViewlet, self).render()
         else:
             return ""
     
@@ -63,3 +63,8 @@ class QuestionsListViewlet(ViewletBase):
         brains = pc(query)
         return brains and [b.getObject() for b in brains] or []
 
+    def getUUID(self):
+        """ Return a uuid for the current context.
+        """
+        uuid = IUUID(self.context)
+        return uuid

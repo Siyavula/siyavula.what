@@ -1,7 +1,0 @@
-<div id="what-container">
-    <tal:questions repeat="question view/questions">
-    <span tal:replace="structure question/@@render-question">
-        Rendered question
-    </span>
-    </tal:questions>
-</div>
