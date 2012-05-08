@@ -1,25 +1,14 @@
-jq(document).ready(function(){
-    
-    jq("input#siyavula-what-question-add-button").click(function(event) {
-        event.preventDefault();
-        text = jq("textarea#question").val();
-        if (text == "") {
-            alert('You must supply a question.');
-            return;
-        }
-        context_url = jq('input#context_url').attr('value');
-        jq.ajax({
-            url: context_url + "/@@add-question-json",
-            data: {
-                'question': text,
-            },
-            success: updateQuestions,
-            error: displayError,
-            dataType: "json",
-        });
+jq(document).bind('loadInsideOverlay', function() {
+
+    jq('textarea.mce_editable').each(function() {
+        var config_id = $(this).attr('id');
+        delete InitializedTinyMCEInstances[config_id];
+        var config = new TinyMCEConfig(config_id);
+        config.init();
     });
 
-    jq("button.siyavula-add-answer-button").click(function(event) {
+    jq("div#answer-action-buttons-container button.siyavula-add-answer-button")
+        .click(function(event) {
         event.preventDefault();
         var answerid = jq(this).attr('answerid');
         var editor = jq('iframe#' + answerid + '-add-answer-area_ifr');
@@ -44,6 +33,40 @@ jq(document).ready(function(){
         });
     });
     
+}); 
+
+jq(document).ready(function(){
+    
+    jq("input#siyavula-what-question-add-button").click(function(event) {
+        event.preventDefault();
+        text = jq("textarea#question").val();
+        if (text == "") {
+            alert('You must supply a question.');
+            return;
+        }
+        context_url = jq('input#context_url').attr('value');
+        jq.ajax({
+            url: context_url + "/@@add-question-json",
+            data: {
+                'question': text,
+            },
+            success: updateQuestions,
+            error: displayError,
+            dataType: "json",
+        });
+    });
+
+    jq("button.siyavula-add-answer-button").prepOverlay({
+        subtype: 'ajax',
+        filter: '#content',
+        closeselector: '[name=form.button.cancel]',
+        config: {onClose : function (event) {
+                    var overlay = this.getOverlay();
+                    jq(overlay).remove();
+                    }
+                }
+    });
+
     jq("form[name='delete-question']")
         .find("input[name='action.button']").click(function(event) {
 
@@ -62,24 +85,34 @@ jq(document).ready(function(){
     });
 
     jq("form[name='delete-answer']")
-        .find("input[name='action.button']").click(function(event) {
-
-        event.preventDefault();
-        questionid = jq(this).parent().find('input[name="questionid"]').val();
-        answerid = jq(this).parent().find('input[name="answerid"]').val();
-        context_url = jq('input#context_url').attr('value');
-        jq.ajax({
-            url: context_url + "/@@delete-answer-json",
-            data: {
-                'questionid': questionid,
-                'answerid': answerid,
-            },
-            success: removeAnswer,
-            error: displayError,
-            dataType: "json",
-        });
-    });
+        .find("input[name='action.button']").click(deleteAnswer);
 });
+
+function deleteAnswer(event) {
+    event.preventDefault();
+    questionid = jq(this).parent().find('input[name="questionid"]').val();
+    answerid = jq(this).parent().find('input[name="answerid"]').val();
+    context_url = jq('input#context_url').attr('value');
+    jq.ajax({
+        url: context_url + "/@@delete-answer-json",
+        data: {
+            'questionid': questionid,
+            'answerid': answerid,
+        },
+        success: removeAnswer,
+        error: displayError,
+        dataType: "json",
+    });
+}
+
+function removeQuestion(data, textStatus, jqXHR) {
+    var result = data.result;
+    if (result == 'failure') {
+        alert(data.message);
+        return;
+    }
+    element = jq('div#'+data.questionid).remove();
+}
 
 function updateQuestions(data, textStatus, jqXHR) {
     var result = data.result;
@@ -92,15 +125,6 @@ function updateQuestions(data, textStatus, jqXHR) {
     jq("textarea#question").attr('value', "");
 }
 
-function removeQuestion(data, textStatus, jqXHR) {
-    var result = data.result;
-    if (result == 'failure') {
-        alert(data.message);
-        return;
-    }
-    element = jq('div#'+data.questionid).remove();
-}
-
 function updateAnswers(data, textStatus, jqXHR) {
     var result = data.result;
     var html = data.html;
@@ -111,6 +135,8 @@ function updateAnswers(data, textStatus, jqXHR) {
     questionid = jq(this).find('.questionid').attr('value');
     element = jq(document).find('div#' + questionid + '-answers-list');
     element.append(html);
+    button = jq('div#'+data.answerid).find('input@[name="action.button"]');
+    jq(button).bind('click', deleteAnswer);
     jq(this).find('iframe').contents().find('body').html('');
 }
 
