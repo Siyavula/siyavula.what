@@ -11,8 +11,8 @@ jq(document).bind('loadInsideOverlay', function() {
         .click(function(event) {
         event.preventDefault();
         var answerid = jq(this).attr('answerid');
-        var editor = jq('iframe#' + answerid + '-add-answer-area_ifr');
-        var contents = jq(editor).contents().find('body').html();
+        var editor = jq('iframe#answer_ifr').contents().find('body');
+        var contents = jq(editor).html();
         if (contents == "<p><br mce_bogus=\"1\"></p>" || contents == '') {
             alert('You must supply an answer.');
             return;
@@ -20,6 +20,8 @@ jq(document).bind('loadInsideOverlay', function() {
         var answerform = jq(this).parent().parent();
         var questionid = jq(answerform).find('input.questionid').val();
         context_url = jq('input#context_url').attr('value');
+        jq('.close').click();
+        pb.spinner.show();
         jq.ajax({
             url: context_url + "/@@add-answer-json",
             data: {
@@ -60,11 +62,7 @@ jq(document).ready(function(){
         subtype: 'ajax',
         filter: '#content',
         closeselector: '[name=form.button.cancel]',
-        config: {onClose : function (event) {
-                    var overlay = this.getOverlay();
-                    jq(overlay).remove();
-                    }
-                }
+        api: true,
     });
 
     jq("form[name='delete-question']")
@@ -126,6 +124,8 @@ function updateQuestions(data, textStatus, jqXHR) {
 }
 
 function updateAnswers(data, textStatus, jqXHR) {
+    pb.spinner.hide();
+
     var result = data.result;
     var html = data.html;
     if (result == 'failure') {
