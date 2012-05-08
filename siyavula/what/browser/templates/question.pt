@@ -68,8 +68,7 @@
             <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
                 tal:attributes="action string:${action}/@@add-answer">
                 <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
-                        tal:attributes="id string:add-answer-button:${context/id};
-                                        answerid string:${context/id};
+                        tal:attributes="answerid string:${context/id};
                                         action string:${context/absolute_url}/@@add-answer"
                         style="display: inline;">
                         Answer 
