@@ -11,28 +11,6 @@ class QAViewlet(ViewletBase):
     """
     index = ViewPageTemplateFile('templates/qaviewlet.pt')
 
-    def update(self):
-        super(QAViewlet, self).update()
-
-        # if the form was not posted to this method we do nothing
-        if self.request.form.get('siyavula.what.qaviewlet.form.submitted'):
-            action = self.request.form.get('action', '').lower()
-            if not action: return
-           
-            # action can be 'add-answer' or 'delete-answer'
-            portal_props = getToolByName(self.context, 'portal_properties')
-            site_props = portal_props.get('site_properties')
-            encoding = site_props.getProperty('default_charset', 'urt-8')
-            viewname = ('@@%s' %action).encode(encoding)
-            view = self.context.restrictedTraverse(viewname)
-            view()
-            url = self.context.absolute_url()
-            relatedContent = self.context.relatedContent.to_object
-            if relatedContent:
-                url = relatedContent.absolute_url()
-            self.request.response.redirect(url)
-            return
-
     def render(self):
         """ We render an empty string when a specific piece of content
             does not allow questions.

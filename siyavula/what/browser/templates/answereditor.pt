@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emas.theme">
+<body>
+
+    <metal:core fill-slot="main">
+        <h1 class="documentFirstHeading">Answer</h1>
+
+        <div id="content-core">
+            <div id="answer-container"
+                tal:condition="view/can_show">
+                <div id="answer-form" class="commentBody">
+                    <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
+                        tal:attributes="action string:${context/absolute_url}/@@add-answer">
+                        <input type="hidden" 
+                            id="siyavula.what.qaviewlet.form.submitted"
+                            name="siyavula.what.qaviewlet.form.submitted" value="submitted" />
+                        <input type="hidden" class="questionid" name="questionid" value=""
+                        tal:attributes="value string:${context/getId}">
+                        <input type="hidden" value="add-answer" name="action">
+                        
+                        <div class="textarea-widget required text-field autoresize">
+                            <tal:definitions
+                                define="value string:;
+                                        content string:;
+                                        fieldName string:answer;
+                                        inputname fieldName;
+                                        inputvalue content;
+                                        rows python:5;
+                                        cols python:100;
+                                        ">
+                            <div metal:use-macro="context/wysiwyg_support/macros/wysiwygEditorBox"></div>
+                            </tal:definitions>
+                        </div>
+                        <div id="answer-action-buttons-container">
+                            <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
+                                    tal:attributes="id string:add-answer-button:${context/id};
+                                                    answerid string:${context/id}"
+                                    style="display: inline;">
+                                    Answer 
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </metal:core>
+
+</body>
+</html>

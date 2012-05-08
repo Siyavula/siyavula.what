@@ -23,7 +23,7 @@
         name="add-question"
         class=".views.AddQuestionView"
         permission="zope2.View"
-        attribute="addQuestion"
+        template="templates/addform.pt"
         />
 
     <browser:page
@@ -59,11 +59,11 @@
         />
 
     <browser:page
-        for="*"
+        for="siyavula.what.question.IQuestion"
         name="add-answer"
         class=".views.AddAnswerView"
         permission="zope2.View"
-        attribute="addAnswer"
+        template="templates/answereditor.pt"
         />
 
     <browser:page
@@ -111,14 +111,6 @@
         name="render-answer"
         class=".views.AddAnswerView"
         template="templates/answer.pt"
-        permission="zope2.View"
-        />
-
-    <browser:page
-        for="*"
-        name="answer-editor"
-        class=".views.AddAnswerView"
-        template="templates/answereditor.pt"
         permission="zope2.View"
         />
 

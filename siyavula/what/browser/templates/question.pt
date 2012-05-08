@@ -8,7 +8,7 @@
                  can_delete python:view.can_delete(context);
                  action context/absolute_url">
 
-    <div id="question_id" class="comment"
+    <div id="question_id" class="comment commentBody"
         tal:attributes="id questionid"> 
         <div class="commentImage" tal:condition="author_image">
             <a href="" tal:condition="author_image"
@@ -57,49 +57,24 @@
         <div id="answers-list" tal:attributes="id string:${questionid}-answers-list">
             
             <label>Answer:</label>
-            <div class="commentBody answer" tal:repeat="answer python:context.getAnswers()">
-                <span tal:define="view nocall:answer/@@render-answer">
-                    <div metal:use-macro="view/index/macros/render_answer" />
-                </span>
-            </div>
+            <tal:answers repeat="answer python:context.getAnswers()">
+            <span tal:define="view nocall:answer/@@render-answer">
+                <div metal:use-macro="view/index/macros/render_answer" />
+            </span>
+            </tal:answers>
         </div>
         
-        <div id="answer-container"
-            tal:condition="view/can_show">
-            <div id="answer-form" class="commentBody">
-                <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
-                    tal:attributes="action action">
-                    <input type="hidden" 
-                        id="siyavula.what.qaviewlet.form.submitted"
-                        name="siyavula.what.qaviewlet.form.submitted" value="submitted" />
-                    <input type="hidden" class="questionid" name="questionid" value=""
-                        tal:attributes="value questionid">
-                    <input type="hidden" value="add-answer" name="action">
-                    
-                    <div class="textarea-widget required text-field autoresize">
-                        <tal:define
-                            define="value string:;
-                                    content string:;
-                                    fieldName string:${context/id}-add-answer-area;
-                                    inputname fieldName;
-                                    inputvalue content;
-                                    rows python:5;
-                                    cols python:100;
-                                    ">
-                        <div metal:use-macro="context/wysiwyg_support/macros/wysiwygEditorBox"/>
-                        </tal:define>
-                    </div>
-                    <div id="answer-action-buttons-container">
-                        <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
-                                tal:attributes="id string:add-answer-button:${context/id};
-                                                answerid string:${context/id}"
-                                style="display: inline;">
-                                Answer 
-                        </button>
-                    </div>
-                </form>
-            </div>
-
+        <div id="answer-container" tal:condition="view/can_show">
+            <form id="siyavula-add-answer-form" name="form.answer" action="." method="POST"
+                tal:attributes="action string:${action}/@@add-answer">
+                <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
+                        tal:attributes="id string:add-answer-button:${context/id};
+                                        answerid string:${context/id};
+                                        action string:${context/absolute_url}/@@add-answer"
+                        style="display: inline;">
+                        Answer 
+                </button>
+            </form>
         </div>
     </div>
 </div>

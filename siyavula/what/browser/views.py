@@ -7,6 +7,7 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from zExceptions import NotFound
 from z3c.relationfield.relation import create_relation
 
+from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 
 from Products.Five import BrowserView
@@ -21,6 +22,17 @@ class AddQuestionView(BrowserView):
     """ Add a question to the questions folder and associate it with the
         given context.
     """
+    def __call__(self):
+        if self.request.form.get('siyavula.what.questionadd.form.submitted'):
+            question = self.addQuestion()
+            url = self.context.absolute_url()
+            relatedContent = question.relatedContent.to_object
+            if relatedContent:
+                url = relatedContent.absolute_url()
+            self.request.response.redirect(url)
+            return
+        return self.index()
+
     def addQuestion(self):
         request = self.request
         context = self.context
@@ -53,6 +65,12 @@ class AddQuestionView(BrowserView):
                            'message': message,
                            'html'   : html})
 
+    def getUUID(self):
+        """ Return a uuid for the current context.
+        """
+        uuid = IUUID(self.context)
+        return uuid
+
 
 class DeleteQuestionView(BrowserView):
     def deleteQuestion(self):
@@ -83,6 +101,19 @@ class DeleteQuestionView(BrowserView):
 class AddAnswerView(BrowserView):
     """ Add an answer for a given the question.
     """
+
+    def __call__(self):
+        if self.request.form.get('siyavula.what.qaviewlet.form.submitted'):
+            answer = self.addAnswer()
+            url = self.context.absolute_url()
+            relatedContent = self.context.relatedContent.to_object
+            if relatedContent:
+                url = relatedContent.absolute_url()
+            self.request.response.redirect(url)
+            return
+        else:
+            return self.index() 
+
     def can_show(self):
         permission = 'Siyavula What: Add Answer'
         pmt = getToolByName(self.context, 'portal_membership')
@@ -92,10 +123,7 @@ class AddAnswerView(BrowserView):
         request = self.request
         context = self.context
 
-        answer_text = request.get('answer', '')
-        if not answer_text:
-            return
-
+        answer_text = request['answer']
         portal = context.restrictedTraverse('@@plone_portal_state').portal()
         questions = portal._getOb('questions')
 
@@ -117,14 +145,22 @@ class AddAnswerView(BrowserView):
 
     def addAnswerJSON(self):
         self.request.response.setHeader('X-Theme-Disabled', 'True')
-        answer = self.addAnswer() 
-        message = "An answer was added."
-        result = 'success'
-        view = answer.restrictedTraverse('@@render-answer')
-        html = view()
-        return json.dumps({'result' : result,
-                           'message': message,
-                           'html'   : html})
+        answer = self.addAnswer()
+        if answer:
+            message = "An answer was added."
+            result = 'success'
+            answerid = answer.getId()
+            view = answer.restrictedTraverse('@@render-answer')
+            html = view()
+        else:
+            message = 'Answer could not be added.'
+            result = 'failure'
+            answerid = ''
+            html = ''
+        return json.dumps({'result'  : result,
+                           'message' : message,
+                           'answerid': answerid,
+                           'html'    : html})
     
     def allowQuestions(self):
         """ Check if the content in question (self.context) allows

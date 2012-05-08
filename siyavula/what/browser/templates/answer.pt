@@ -1,9 +1,9 @@
+<metal:render_answer define-macro="render_answer">
 <div class="commentBody answer"
+    tal:define="answer nocall:answer|nocall:context;
+                questionid questionid|answer/aq_parent/id"
     tal:attributes="id answer/id"
-    tal:condition="view/can_show"
-    tal:define="answer nocall:context;
-                questionid context/aq_parent/id">
-    <metal:render_answer define-macro="render_answer">
+    tal:condition="view/can_show">
     <span tal:replace="structure answer/text/output|nothing">Answer text</span>
     <div class="commentActions">
         <form style="display: inline;" method="post"
@@ -21,5 +21,5 @@
                 name="action.button">
         </form>
     </div>
-    </metal:render_answer>
 </div>
+</metal:render_answer>
