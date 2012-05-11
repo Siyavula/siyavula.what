@@ -11,9 +11,9 @@
     <!-- Question and Answer views and viewlet -->
     <browser:viewlet
         for="Products.CMFCore.interfaces._content.IContentish"
-        name="question-add"
+        name="qaviewlet"
         manager="plone.app.layout.viewlets.interfaces.IBelowContent"
-        class=".questionaddviewlet.QuestionAddViewlet"
+        class=".viewlets.QAViewlet"
         permission="zope2.View"
         layer="siyavula.what.interfaces.ISiyavulaWhatLayer"
         />
@@ -23,7 +23,7 @@
         name="add-question"
         class=".views.AddQuestionView"
         permission="zope2.View"
-        attribute="addQuestion"
+        template="templates/addform.pt"
         />
 
     <browser:page
@@ -58,21 +58,12 @@
         permission="zope2.View"
         />
 
-    <browser:viewlet
-        for="Products.CMFCore.interfaces._content.IContentish"
-        name="questions-list"
-        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
-        class=".questionslistviewlet.QuestionsListViewlet"
-        permission="zope2.View"
-        layer="siyavula.what.interfaces.ISiyavulaWhatLayer"
-        />
-
     <browser:page
-        for="*"
+        for="siyavula.what.question.IQuestion"
         name="add-answer"
         class=".views.AddAnswerView"
         permission="zope2.View"
-        attribute="addAnswer"
+        template="templates/answereditor.pt"
         />
 
     <browser:page
@@ -111,7 +102,7 @@
         for="siyavula.what.question.IQuestion"
         name="render-question"
         class=".views.AddAnswerView"
-        template="questionslistviewlet_templates/question.pt"
+        template="templates/question.pt"
         permission="zope2.View"
         />
 
@@ -119,7 +110,8 @@
         for="siyavula.what.answer.IAnswer"
         name="render-answer"
         class=".views.AddAnswerView"
-        template="questionslistviewlet_templates/answer.pt"
+        template="templates/answer.pt"
         permission="zope2.View"
         />
+
 </configure>
