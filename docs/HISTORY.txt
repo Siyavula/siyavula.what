@@ -8,6 +8,9 @@ Changelog
 
 - We created one viewlet from the original ones and simplified the templates on a new branch.  This is the big merge to pull viewlet-unification branch into master.
 
+- Migration steps:
+  Re-install the product to update the viewlet registrations.
+
 0.1dev (unreleased)
 -------------------
 
