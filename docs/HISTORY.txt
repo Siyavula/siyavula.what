@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.2dev (unreleased)
+-------------------
+
+(Revision hash: 57be92ba8596b1b641e8a5b56a9baeab21c54894)
+
+- We created one viewlet from the original ones and simplified the templates on a new branch.  This is the big merge to pull viewlet-unification branch into master.
+
 0.1dev (unreleased)
 -------------------
 
@@ -33,7 +40,3 @@ Revision hash: 1d4abc5bd2f28a71538615e656de86e877506249
 - Question.answers constrained to 'siyavula.what.answer' types.
 - git pull and restart server.
 
-Revision hash: 57be92ba8596b1b641e8a5b56a9baeab21c54894
-
-- Big merge to pull viewlet-unification branch into master
-- We created one viewlet from the original ones and simplified the templates.
