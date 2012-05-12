@@ -56,12 +56,17 @@
         </div>
         <div id="answers-list" tal:attributes="id string:${questionid}-answers-list">
             
-            <label>Answer:</label>
-            <tal:answers repeat="answer python:context.getAnswers()">
+            <tal:answers define="answers python:context.getAnswers()">
+            <label tal:attributes="class python:answers and 'show' or 'hide'">
+                Answer:
+            </label>
+            <tal:answers repeat="answer answers">
             <span tal:define="view nocall:answer/@@render-answer">
                 <div metal:use-macro="view/index/macros/render_answer" />
             </span>
             </tal:answers>
+            </tal:answers>
+
         </div>
         
         <div id="answer-container" tal:condition="view/can_show">
@@ -71,7 +76,7 @@
                         tal:attributes="answerid string:${context/id};
                                         action string:${context/absolute_url}/@@add-answer"
                         style="display: inline;">
-                        Answer 
+                        Add answer 
                 </button>
             </form>
         </div>
