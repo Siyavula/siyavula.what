@@ -1,3 +1,8 @@
+// WARNING:
+// The js here can be overridden in any of the products that use the
+// siyavula.what. If you don't see the js here executing, double check
+// the other products/layers for overridding scripts. Grep is your friend :)
+
 jq(document).bind('loadInsideOverlay', function() {
 
     jq('textarea.mce_editable').each(function() {
@@ -66,22 +71,8 @@ jq(document).ready(function(){
     });
 
     jq("form[name='delete-question']")
-        .find("input[name='action.button']").click(function(event) {
-
-        event.preventDefault();
-        questionid = jq(this).parent().find('input[name="questionid"]').val();
-        context_url = jq('input#context_url').attr('value');
-        jq.ajax({
-            url: context_url + "/@@delete-question-json",
-            data: {
-                'questionid': questionid,
-            },
-            success: removeQuestion,
-            error: displayError,
-            dataType: "json",
-        });
-    });
-
+        .find("input[name='action.button']").click(deleteQuestion);
+        
     jq("form[name='delete-answer']")
         .find("input[name='action.button']").click(deleteAnswer);
 });
@@ -98,6 +89,21 @@ function deleteAnswer(event) {
             'answerid': answerid,
         },
         success: removeAnswer,
+        error: displayError,
+        dataType: "json",
+    });
+}
+
+function deleteQuestion(event) {
+    event.preventDefault();
+    questionid = jq(this).parent().find('input[name="questionid"]').val();
+    context_url = jq('input#context_url').attr('value');
+    jq.ajax({
+        url: context_url + "/@@delete-question-json",
+        data: {
+            'questionid': questionid,
+        },
+        success: removeQuestion,
         error: displayError,
         dataType: "json",
     });
@@ -121,6 +127,12 @@ function updateQuestions(data, textStatus, jqXHR) {
     }
     jq('div#what-container').append(html);
     jq("textarea#question").attr('value', "");
+
+    // find delete button in returned html
+    var container = jq('div#' + data.questionid +"'");
+    var button = jq(container).find('input@[name="action.button"]');
+    // add delete click eventhandler
+    jq(button).bind('click', deleteQuestion);
 }
 
 function updateAnswers(data, textStatus, jqXHR) {

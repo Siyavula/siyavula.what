@@ -61,9 +61,10 @@ class AddQuestionView(BrowserView):
         view = question.restrictedTraverse('@@render-question')
         html = view()
         result = 'success'
-        return json.dumps({'result' : result,
-                           'message': message,
-                           'html'   : html})
+        return json.dumps({'result'    : result,
+                           'message'   : message,
+                           'questionid': question.getId(),
+                           'html'      : html})
 
     def getUUID(self):
         """ Return a uuid for the current context.
