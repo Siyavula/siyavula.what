@@ -149,7 +149,7 @@ function updateAnswers(data, textStatus, jqXHR) {
     element.append(html);
     button = jq('div#'+data.answerid).find('input@[name="action.button"]');
     jq(button).bind('click', deleteAnswer);
-    jq(this).find('iframe').contents().find('body').html('');
+    jq('div#' + questionid + ' label').show();
 }
 
 function removeAnswer(data, textStatus, jqXHR) {
@@ -158,7 +158,13 @@ function removeAnswer(data, textStatus, jqXHR) {
         alert(data.message);
         return;
     }
-    element = jq('div#'+data.answerid).remove();
+    element = jq('div#'+data.answerid);
+    container = jq(element).parent().parent();
+    jq(element).remove();
+    answers = jq(container).find('div.answer');
+    if (answers.length < 1) {
+        jq(container).find('label').hide();
+    }
 }
 
 function displayError(jqXHR, textStatus, errorThrown) {
