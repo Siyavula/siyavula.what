@@ -41,7 +41,7 @@
                                     tal:attributes="id string:add-answer-button:${context/id};
                                                     answerid string:${context/id}"
                                     style="display: inline;">
-                                    Answer 
+                                    Submit
                             </button>
                         </div>
                     </form>
