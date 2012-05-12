@@ -44,12 +44,12 @@
 
 .commentBody {
     clear: both;
-    margin: 1em 0;
     overflow: auto;
 }
 
 .commentBody p {
     float: none;
+    margin: 0;
  }
 
 .discussion .documentByLine {
@@ -198,4 +198,24 @@ form#siyavula-add-answer-form div.textarea-widget td.mceStatusbar {
 
 .overlay iframe {
     box-shadow: none;
+}
+
+.pb-ajax, .pb-image, .overlay iframe {
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    box-shadow: 0 0 0.5em 0 #888888;
+    background-color: #FFFFFF;
+    white-space: normal;
+}
+
+div#answer-form.commentBody {
+    box-shadow: none;
+}
+
+div#what-container div.commentBody div.commentActions {
+    float: left;
+    margin-bottom: 0;
+}
+
+div#what-container div.discussion div.comment div.commentBody p {
+    margin: 0;
 }
