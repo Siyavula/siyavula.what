@@ -2,8 +2,7 @@
 <div class="commentBody answer"
     tal:define="answer nocall:answer|nocall:context;
                 questionid questionid|answer/aq_parent/id"
-    tal:attributes="id answer/id"
-    tal:condition="view/can_show">
+    tal:attributes="id answer/id">
     <span tal:replace="structure answer/text/output|nothing">Answer text</span>
     <div class="commentActions">
         <form style="display: inline;" method="post"
