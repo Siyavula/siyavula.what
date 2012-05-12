@@ -4,12 +4,11 @@ Changelog
 0.2dev (unreleased)
 -------------------
 
-(Revision hash: 57be92ba8596b1b641e8a5b56a9baeab21c54894)
-
 - We created one viewlet from the original ones and simplified the templates on a new branch.  This is the big merge to pull viewlet-unification branch into master.
 
 - Migration steps:
-  Re-install the product to update the viewlet registrations.
+  Re-install the product through portal quickinstaller, to update the viewlet
+  registrations and register the content types.
 
 0.1dev (unreleased)
 -------------------
