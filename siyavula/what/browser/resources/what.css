@@ -219,3 +219,7 @@ div#what-container div.commentBody div.commentActions {
 div#what-container div.discussion div.comment div.commentBody p {
     margin: 0;
 }
+
+iframe#answer_ifr {
+    box-shadow: none;
+}
