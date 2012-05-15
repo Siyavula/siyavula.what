@@ -39,7 +39,8 @@
                         <div id="answer-action-buttons-container">
                             <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
                                     tal:attributes="id string:add-answer-button:${context/id};
-                                                    answerid string:${context/id}"
+                                                    answerid string:${context/id};
+                                                    context_url context/absolute_url"
                                     style="display: inline;">
                                     Submit
                             </button>

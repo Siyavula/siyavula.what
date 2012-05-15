@@ -24,7 +24,7 @@ jq(document).bind('loadInsideOverlay', function() {
         }
         var answerform = jq(this).parent().parent();
         var questionid = jq(answerform).find('input.questionid').val();
-        context_url = jq('input#context_url').attr('value');
+        context_url = jq(this).attr('context_url');
         jq('.close').click();
         pb.spinner.show();
         jq.ajax({
@@ -51,7 +51,7 @@ jq(document).ready(function(){
             alert('You must supply a question.');
             return;
         }
-        context_url = jq('input#context_url').attr('value');
+        context_url = jq(this).attr('context_url');
         jq.ajax({
             url: context_url + "/@@add-question-json",
             data: {
@@ -81,7 +81,7 @@ function deleteAnswer(event) {
     event.preventDefault();
     questionid = jq(this).parent().find('input[name="questionid"]').val();
     answerid = jq(this).parent().find('input[name="answerid"]').val();
-    context_url = jq('input#context_url').attr('value');
+    context_url = jq(this).attr('context_url');
     jq.ajax({
         url: context_url + "/@@delete-answer-json",
         data: {
@@ -97,7 +97,7 @@ function deleteAnswer(event) {
 function deleteQuestion(event) {
     event.preventDefault();
     questionid = jq(this).parent().find('input[name="questionid"]').val();
-    context_url = jq('input#context_url').attr('value');
+    context_url = jq(this).attr('context_url');
     jq.ajax({
         url: context_url + "/@@delete-question-json",
         data: {

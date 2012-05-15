@@ -1,6 +1,7 @@
 <div id="what-container">
     
-    <div tal:define="addview nocall:context/@@add-question">
+    <div tal:define="addview nocall:context/@@add-question"
+        tal:condition="view/is_enabled">
         <div metal:use-macro="addview/index/macros/questionaddform" />
     </div>
 

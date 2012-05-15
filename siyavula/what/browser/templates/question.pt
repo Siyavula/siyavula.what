@@ -50,7 +50,7 @@
                     <input type="hidden" value="delete-question" name="action">
                     <input tal:condition="can_delete"
                         type="submit" value="Delete" class="destructive allowMultiSubmit"
-                        name="action.button">
+                        name="action.button" tal:attributes="context_url context/absolute_url">
                 </form>
             </div>
         </div>
@@ -74,7 +74,8 @@
                 tal:attributes="action string:${action}/@@add-answer">
                 <button class="context hide allowMultiSubmit submitting siyavula-add-answer-button"
                         tal:attributes="answerid string:${context/id};
-                                        action string:${context/absolute_url}/@@add-answer"
+                                        action string:${context/absolute_url}/@@add-answer;
+                                        context_url context/absolute_url;"
                         style="display: inline;">
                         Add answer 
                 </button>

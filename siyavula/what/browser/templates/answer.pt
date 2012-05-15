@@ -17,7 +17,8 @@
             <input type="hidden" value="delete-answer" name="action">
             <input tal:condition="python:view.can_delete_answer(answer)"
                 type="submit" value="Delete" class="destructive allowMultiSubmit"
-                name="action.button">
+                name="action.button"
+                tal:attributes="context_url context/absolute_url">
         </form>
     </div>
 </div>
