@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.2dev (unreleased)
--------------------
+1.1
+---
 
 - We created one viewlet from the original ones and simplified the templates on a new branch.  This is the big merge to pull viewlet-unification branch into master.
 
@@ -10,13 +10,8 @@ Changelog
   Re-install the product through portal quickinstaller, to update the viewlet
   registrations and register the content types.
 
-0.1dev (unreleased)
--------------------
-
-- Initial release
-
-0.1a (unreleased)
------------------
+1.0
+---
     
 - Added eventhandler to notify question creator of answers.
 
