@@ -195,9 +195,10 @@ class AddAnswerView(BrowserView):
 
     def can_delete_answer(self, answer):
         pmt = getToolByName(self.context, 'portal_membership')
-        portal_properties = getToolByName(self.context, 'portal_properties')
-        encoding = portal_properties.get('default_charset', 'utf-8')
-        member = pmt.getAuthenticatedMember().getId().encode(encoding)
+        member = pmt.getAuthenticatedMember().getId()
+        if member is None:
+            return False
+
         return answer.Creator() == member and True or False
 
 
