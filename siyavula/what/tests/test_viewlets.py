@@ -5,7 +5,7 @@ from Products.Five.browser import BrowserView as View
 
 from base import SiyavulaWhatTestBase
 
-from siyavula.what.browser.questionslistviewlet import QuestionsListViewlet 
+from siyavula.what.browser.viewlets import QAViewlet 
 from siyavula.what.interfaces import ISiyavulaWhatLayer
 
 dirname = os.path.dirname(__file__)
