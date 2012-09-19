@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2
+---
+
+- Fix javascript to make IE happy
+
 1.1
 ---
 
