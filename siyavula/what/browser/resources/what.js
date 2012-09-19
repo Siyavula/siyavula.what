@@ -55,11 +55,11 @@ jq(document).ready(function(){
         jq.ajax({
             url: context_url + "/@@add-question-json",
             data: {
-                'question': text,
+                'question': text
             },
             success: updateQuestions,
             error: displayError,
-            dataType: "json",
+            dataType: "json"
         });
     });
 
@@ -67,7 +67,7 @@ jq(document).ready(function(){
         subtype: 'ajax',
         filter: '#content',
         closeselector: '[name=form.button.cancel]',
-        api: true,
+        api: true
     });
 
     jq("form[name='delete-question']")
