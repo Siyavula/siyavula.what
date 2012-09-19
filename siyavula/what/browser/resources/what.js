@@ -31,12 +31,12 @@ jq(document).bind('loadInsideOverlay', function() {
             url: context_url + "/@@add-answer-json",
             data: {
                 'answer': contents,
-                'questionid': questionid,
+                'questionid': questionid
             },
             success: updateAnswers,
             error: displayError,
             dataType: "json",
-            context: answerform,
+            context: answerform
         });
     });
     
@@ -86,11 +86,11 @@ function deleteAnswer(event) {
         url: context_url + "/@@delete-answer-json",
         data: {
             'questionid': questionid,
-            'answerid': answerid,
+            'answerid': answerid
         },
         success: removeAnswer,
         error: displayError,
-        dataType: "json",
+        dataType: "json"
     });
 }
 
@@ -101,11 +101,11 @@ function deleteQuestion(event) {
     jq.ajax({
         url: context_url + "/@@delete-question-json",
         data: {
-            'questionid': questionid,
+            'questionid': questionid
         },
         success: removeQuestion,
         error: displayError,
-        dataType: "json",
+        dataType: "json"
     });
 }
 
